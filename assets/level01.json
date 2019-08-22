@@ -1,0 +1,21 @@
+{
+	"textures":
+	[
+		{"filePath":"assets/ship.png", "TextureID":"player"
+, "isSmooth":false},
+		,
+		{"filePath":"assets/explosion2.png", "TextureID":"explosion"
+, "isSmooth":false},
+		{"filePath":"assets/laserBlue07.png", "TextureID":"pBullet"
+, "isSmooth":false}
+	],
+	"objects":
+	[
+		{"ObjectID":0, "TextureID":"player"},
+		{"ObjectID":1, "Size":0, "TextureID":"lGreyAsteroid"},
+		{"ObjectID":1, "Size":1, "TextureID":"mGreyAsteroid"},
+		{"ObjectID":1, "Size":2, "TextureID":"sGreyAsteroid"},
+		{"ObjectID":2, "TextureID":"explosion"},
+		{"ObjectID":3, "TextureID":"pBullet"}
+	]
+}

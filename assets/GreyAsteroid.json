@@ -1,0 +1,11 @@
+{
+	"textures":
+	[
+		{"filePath":"assets/meteorGrey_big4.png", "textureID":"lGreyAsteroid"
+, "isSmooth":true, "index":0},
+		{"filePath":"assets/meteorGrey_med1.png", "textureID":"mGreyAsteroid"
+, "isSmooth":true, "index":1},
+		{"filePath":"assets/meteorGrey_small2.png", "textureID":"sGreyAsteroid"
+, "isSmooth":true, "index":2}
+	]
+}

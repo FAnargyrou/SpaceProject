@@ -1,0 +1,7 @@
+{
+	"textures":
+	[
+		{"filePath":"assets/enemyBlack4.png", "textureID":"enemy"
+, "isSmooth":false, "index":0}
+	]
+}
