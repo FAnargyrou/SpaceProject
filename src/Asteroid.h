@@ -21,12 +21,12 @@ public:
 	template<typename DIR>
 	void SetDirection(DIR dir);
 
-	bool isDivided();
-	void setDivided(bool isDivided);
+	bool IsDivided();
+	void SetDivided(bool isDivided);
 	void SetOppositeDirection();
 	virtual void update(sf::Time deltaTime) override;
 
-	virtual bool isOffBounds() override;
+	virtual bool IsOffBounds() override;
 
 protected:
 	bool bDivided;

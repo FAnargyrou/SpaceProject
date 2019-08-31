@@ -69,32 +69,32 @@ public:
 
 
 	//Set if object is Dead or not
-	void setStatus(bool isDead);
-	bool getStatus();
+	void SetDeadStatus(bool isDead);
+	bool GetDeadStatus();
 
 	//Return true if animation was completed
-	bool waitAnimation(int waitPoint);
+	bool WaitAnimation(int waitPoint);
 
 	//Return true if Object is outside window
-	virtual bool isOffBounds();
+	virtual bool IsOffBounds();
 
 	//Deals damage to the object
-	void damageObject(int hit = 1);
+	void DamageObject(int hit = 1);
 	//Gets object's current HP
-	int getHitPoints();
+	int GetHitPoints();
 
-	void setMaxHitPoints(int hp);
-	void explodeObject(sf::Time deltaTime, float scale = 1.f);
+	void SetMaxHitPoints(int hp);
+	void ExplodeObject(sf::Time deltaTime, float scale = 1.f);
 
 	void SetImmunity(float seconds);
 	void UpdateImmunity(sf::Time deltaTime, bool bIsFlashing = false);
-	bool isImmune();
+	bool IsImmune();
 
 	Size GetSize();
 	void setSize(Size size);
 protected:
 	//Sets sprite origin relative to the current sprite
-	void setCenter();
+	void SetCenter();
 
 	sf::Sprite sprite;
 	sf::Vector2f velocity; //use velocity for speed increasing

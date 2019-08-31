@@ -25,5 +25,5 @@ void Enemy::update(sf::Time deltaTime)
 		sprite.move(movement);
 	}
 	else
-		explodeObject(deltaTime);
+		ExplodeObject(deltaTime);
 }

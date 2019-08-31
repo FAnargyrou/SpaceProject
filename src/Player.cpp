@@ -55,7 +55,7 @@ void Player::update(sf::Time deltaTime)
 			}
 		}
 		sprite.move(movement);
-		if (isOffBounds())
+		if (IsOffBounds())
 		{
 			if (sprite.getPosition().x <= 0)
 			{
@@ -82,7 +82,7 @@ void Player::update(sf::Time deltaTime)
 	}
 	else
 	{
-		explodeObject(deltaTime);
+		ExplodeObject(deltaTime);
 	}
 	updateMissiles();
 }

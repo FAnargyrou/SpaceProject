@@ -13,12 +13,12 @@ Asteroid::Asteroid() : bDivided(false)
 
 }
 
-bool Asteroid::isDivided()
+bool Asteroid::IsDivided()
 {
 	return bDivided;
 }
 
-void Asteroid::setDivided(bool isDivided)
+void Asteroid::SetDivided(bool isDivided)
 {
 	bDivided = isDivided;
 }
@@ -30,7 +30,7 @@ void Asteroid::update(sf::Time deltaTime)
 	{
 		sprite.rotate(0.5f);
 		sprite.move(movement);
-		if (isOffBounds())
+		if (IsOffBounds())
 		{
 			if (sprite.getPosition().x > 400)
 				SetDirection<mDir::Direction>(mDir::LEFT);
@@ -58,11 +58,11 @@ void Asteroid::update(sf::Time deltaTime)
 			scale = 0.5f;
 		else
 			scale = 1.f;
-		explodeObject(deltaTime, scale);
+		ExplodeObject(deltaTime, scale);
 	}
 }
 
-bool Asteroid::isOffBounds()
+bool Asteroid::IsOffBounds()
 {
 	if (sprite.getPosition().x < 0)
 		return true;

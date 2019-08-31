@@ -40,16 +40,16 @@ void PlayState::update(sf::Time deltaTime)
 	for (int astArray = 0; astArray < asteroids.size(); astArray++)
 	{
 		asteroids[astArray]->update(deltaTime);
-		if (!asteroids[astArray]->getStatus())
+		if (!asteroids[astArray]->GetDeadStatus())
 		{
 			for (int secondAstArray = 0; secondAstArray < asteroids.size(); secondAstArray++)
 			{
 				if (secondAstArray != astArray)
 				{
-					if (!asteroids[secondAstArray]->getStatus())
+					if (!asteroids[secondAstArray]->GetDeadStatus())
 					{
 						if (CircleTest(asteroids[astArray]->GetSprite(), asteroids[secondAstArray]->GetSprite()) &&
-							!asteroids[astArray]->isImmune() && !asteroids[secondAstArray]->isImmune())
+							!asteroids[astArray]->IsImmune() && !asteroids[secondAstArray]->IsImmune())
 						{
 							CollideObjects(asteroids[astArray], asteroids[secondAstArray]);
 						}
@@ -58,14 +58,14 @@ void PlayState::update(sf::Time deltaTime)
 			 }
 			if (CircleTest(player.GetSprite(), asteroids[astArray]->GetSprite()))
 			{
-				if (!player.isImmune())
+				if (!player.IsImmune())
 				{
 					//player.damageObject();
-					asteroids[astArray]->damageObject();
+					asteroids[astArray]->DamageObject();
 					CollideObjects(&player, asteroids[astArray]);
 				}
-				if (player.getHitPoints() == 0)
-					player.setStatus(true);
+				if (player.GetHitPoints() == 0)
+					player.SetDeadStatus(true);
 				else
 					player.SetImmunity(2);
 				
@@ -74,13 +74,13 @@ void PlayState::update(sf::Time deltaTime)
 			{
 				if (CircleTest(asteroids[astArray]->GetSprite(), player.getMissileSprite(misArray)))
 				{
-					asteroids[astArray]->damageObject();
+					asteroids[astArray]->DamageObject();
 					player.destroyMissile(misArray);
 				}
 
 			}
-			if (asteroids[astArray]->getHitPoints() == 0)
-				asteroids[astArray]->setStatus(true);
+			if (asteroids[astArray]->GetHitPoints() == 0)
+				asteroids[astArray]->SetDeadStatus(true);
 		}
 		else
 			destroyAsteroid(astArray);
@@ -104,7 +104,7 @@ void PlayState::render(sf::RenderWindow* window)
 
 void PlayState::destroyAsteroid(int index)
 {
-	if (asteroids[index]->waitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x / 2) && !asteroids[index]->isDivided())
+	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x / 2) && !asteroids[index]->IsDivided())
 	{
 		if (asteroids[index]->GetSize() == LARGE)
 		{
@@ -116,7 +116,7 @@ void PlayState::destroyAsteroid(int index)
 				asteroids.back()->SetDirection<int>(count);
 				asteroids.back()->setSize(MEDIUM);
 				asteroids.back()->load(asteroidTextures.getTexture(1), asteroids[index]->GetSprite().getPosition());
-				asteroids.back()->setMaxHitPoints(3);
+				asteroids.back()->SetMaxHitPoints(3);
 				asteroids.back()->SetMovement(0, velocity);
 				asteroids.back()->SetImmunity(1.f);
 			}
@@ -131,14 +131,14 @@ void PlayState::destroyAsteroid(int index)
 				asteroids.back()->SetDirection<int>(count);
 				asteroids.back()->setSize(SMALL);
 				asteroids.back()->load(asteroidTextures.getTexture(2), asteroids[index]->GetSprite().getPosition());
-				asteroids.back()->setMaxHitPoints(1);
+				asteroids.back()->SetMaxHitPoints(1);
 				asteroids.back()->SetMovement(0, velocity);
 				asteroids.back()->SetImmunity(1.f);
 			}
 		}
-		asteroids[index]->setDivided(true);
+		asteroids[index]->SetDivided(true);
 	}
-	if (asteroids[index]->waitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x))
+	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x))
 	{
 		asteroids.erase(asteroids.begin() + index);
 	}
@@ -156,7 +156,7 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 		asteroids.push_back(new GreyAsteroid());
 		asteroids.back()->load(asteroidTextures.getTexture(0), sf::Vector2f((float)position, -50));
 		asteroids.back()->setSize(LARGE);
-		asteroids.back()->setMaxHitPoints(5);
+		asteroids.back()->SetMaxHitPoints(5);
 		asteroids.back()->SetMovement(0, velocity);
 		SpawnDelay = SpawnDelay.Zero;
 	}

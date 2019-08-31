@@ -26,7 +26,7 @@ void Object::load(std::string id, sf::Vector2f position, bool bLoadRect)
 	sprite.setPosition(position);
 	if (bLoadRect)
 		sprite.setTextureRect(rect);
-	setCenter();
+	SetCenter();
 	tID = id;
 }
 
@@ -110,30 +110,30 @@ void Object::Animate(sf::Time deltaTime, int milliseconds, int width, int height
 }
 
 
-void Object::setStatus(bool isDead) //set alive status
+void Object::SetDeadStatus(bool isDead) //set alive status
 {
 	bIsDead = isDead;
 }
 
-bool Object::getStatus()
+bool Object::GetDeadStatus()
 {
 	return bIsDead;
 }
 
-bool Object::waitAnimation(int waitPoint)
+bool Object::WaitAnimation(int waitPoint)
 {
 	if (sprite.getTextureRect().left == waitPoint - sprite.getLocalBounds().width)
 		return true;
 	return false;
 }
 
-void Object::setCenter()
+void Object::SetCenter()
 {
 	auto bounds = sprite.getLocalBounds();
 	sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
-bool Object::isOffBounds()
+bool Object::IsOffBounds()
 {
 	if (sprite.getPosition().x < 0)
 		return true;
@@ -146,7 +146,7 @@ bool Object::isOffBounds()
 	return false;
 }
 
-void Object::damageObject(int hit)
+void Object::DamageObject(int hit)
 {
 	if (hit < 1)
 		hit = 1;
@@ -155,17 +155,17 @@ void Object::damageObject(int hit)
 	sprite.setColor(sf::Color(135,252,255,255));
 }
 
-int Object::getHitPoints()
+int Object::GetHitPoints()
 {
 	return hitPoints;
 }
 
-void Object::setMaxHitPoints(int hp)
+void Object::SetMaxHitPoints(int hp)
 {
 	hitPoints = hp;
 }
 
-void Object::explodeObject(sf::Time deltaTime, float scale )
+void Object::ExplodeObject(sf::Time deltaTime, float scale )
 {
 	if (changeTexture(explosionID))
 	{
@@ -176,7 +176,7 @@ void Object::explodeObject(sf::Time deltaTime, float scale )
 		rect.width = 64;
 		rect.height = 64;
 		sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-		setCenter();
+		SetCenter();
 		sprite.scale(scale, scale);
 		bIsExploding = true;
 	}
@@ -216,7 +216,7 @@ void Object::UpdateImmunity(sf::Time deltaTime, bool bIsFlashing)
 	}
 }
 
-bool Object::isImmune()
+bool Object::IsImmune()
 {
 	return bIsImmune;
 }
