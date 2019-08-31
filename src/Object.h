@@ -1,6 +1,5 @@
 /*				Object.h
 *				Created: 28/02/2015
-*				Last Update: 27/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com

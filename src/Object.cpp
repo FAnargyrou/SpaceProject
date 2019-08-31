@@ -1,6 +1,5 @@
 /*				Object.cpp
 *				Created: 28/02/2015
-*				Last Update: 07/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com

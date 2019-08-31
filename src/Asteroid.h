@@ -1,6 +1,5 @@
 /*				Asteroid.h
 *				Created: 01/03/2015
-*				Last Update: 23/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com

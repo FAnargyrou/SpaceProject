@@ -1,6 +1,5 @@
 /*				Player.cpp
 *				Created: 28/02/2015
-*				Last Update: 07/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -50,7 +49,7 @@ void Player::update(sf::Time deltaTime)
 			fireDelay += deltaTime;
 			if (fireDelay.asMilliseconds() > 200)
 			{
-				fireMissile("missile");
+				FireMissile("missile");
 				fireDelay = fireDelay.Zero;
 			}
 		}
@@ -84,7 +83,7 @@ void Player::update(sf::Time deltaTime)
 	{
 		ExplodeObject(deltaTime);
 	}
-	updateMissiles();
+	UpdateMissiles();
 }
 
 bool Player::isMoving()

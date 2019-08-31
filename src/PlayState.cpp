@@ -1,6 +1,5 @@
 /*				PlayState.cpp
 *				Created: 20/04/2015
-*				Last Update: 26/05/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -75,7 +74,7 @@ void PlayState::update(sf::Time deltaTime)
 				if (CircleTest(asteroids[astArray]->GetSprite(), player.getMissileSprite(misArray)))
 				{
 					asteroids[astArray]->DamageObject();
-					player.destroyMissile(misArray);
+					player.DestroyMissile(misArray);
 				}
 
 			}
