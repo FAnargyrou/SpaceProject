@@ -34,3 +34,4 @@ packages/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*.idb

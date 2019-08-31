@@ -141,19 +141,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Asteroid.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="ContentManager.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GreyAsteroid.cpp" />
-    <ClCompile Include="ContentLoader.cpp" />
-    <ClCompile Include="PlayState.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="src\Asteroid.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Collision.cpp" />
+    <ClCompile Include="src\ContentManager.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GreyAsteroid.cpp" />
+    <ClCompile Include="src\ContentLoader.cpp" />
+    <ClCompile Include="src\PlayState.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Ship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
