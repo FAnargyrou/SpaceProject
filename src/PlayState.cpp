@@ -21,7 +21,7 @@ void PlayState::load()
 	background.setTexture(Content::Instance().get("background"));
 	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
 
-	std::srand(std::time(NULL));
+	std::srand((uint16)std::time(NULL));
 }
 
 void PlayState::clean()
@@ -93,9 +93,9 @@ void PlayState::update(sf::Time deltaTime)
 void PlayState::render(sf::RenderWindow* window)
 {
 	window->draw(background);
-	for (int i = 0; i < player.GetMissiles().size(); i++)
+	for (uint8 i = 0; i < player.GetMissiles().size(); i++)
 		window->draw(player.getMissileSprite(i));
-	for (int astArray = asteroids.size() - 1; astArray >= 0; astArray--)
+	for (uint8 astArray = 0; astArray < asteroids.size(); astArray++)
 		window->draw(asteroids[astArray]->GetSprite());
 	window->draw(player.GetSprite());
 	window->draw(enemy.GetSprite());
@@ -151,10 +151,10 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 	SpawnDelay += deltaTime;
 	if (SpawnDelay.asSeconds() > 3)
 	{
-		int position = std::rand() % 785;
+		uint16 position = std::rand() % 785;
 		float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
 		asteroids.push_back(new GreyAsteroid());
-		asteroids.back()->load(asteroidTextures.getTexture(0), sf::Vector2f(position, -50));
+		asteroids.back()->load(asteroidTextures.getTexture(0), sf::Vector2f((float)position, -50));
 		asteroids.back()->setSize(LARGE);
 		asteroids.back()->setMaxHitPoints(5);
 		asteroids.back()->SetMovement(0, velocity);

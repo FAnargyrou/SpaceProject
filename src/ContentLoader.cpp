@@ -26,7 +26,7 @@ void ContentLoader::LoadContent(std::string filePath, ObjectTexture* objectTextu
 {
 	LoadFile(filePath);
 	Json::Value content = root["textures"];
-	for (int array = 0; array < content.size(); array++)
+	for (uint16 array = 0; array < content.size(); array++)
 	{
 		std::string filePath = content[array].get("filePath", "NULL").asString();
 		if (filePath != "NULL")

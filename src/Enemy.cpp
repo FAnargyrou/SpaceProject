@@ -11,8 +11,8 @@
 Enemy::Enemy(int healthPoints)
 {
 	maxSpeed = 5.f;
-	velocity.x = 0.1;
-	velocity.y = 0.1;
+	velocity.x = 0.1f;
+	velocity.y = 0.1f;
 	hitPoints = healthPoints;
 	size = SMALL;
 }
