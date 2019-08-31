@@ -82,7 +82,7 @@ void PlayState::update(sf::Time deltaTime)
 				asteroids[astArray]->SetDeadStatus(true);
 		}
 		else
-			destroyAsteroid(astArray);
+			DestroyAsteroid(astArray);
 
 	}
 	player.update(deltaTime);
@@ -101,7 +101,7 @@ void PlayState::render(sf::RenderWindow* window)
 	
 }
 
-void PlayState::destroyAsteroid(int index)
+void PlayState::DestroyAsteroid(int index)
 {
 	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x / 2) && !asteroids[index]->IsDivided())
 	{
@@ -139,6 +139,7 @@ void PlayState::destroyAsteroid(int index)
 	}
 	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x))
 	{
+		delete asteroids[index];
 		asteroids.erase(asteroids.begin() + index);
 	}
 
