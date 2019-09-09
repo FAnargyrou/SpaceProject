@@ -111,7 +111,7 @@ void PlayState::DestroyAsteroid(int index)
 			for (int count = 1; count <= 3; count++)
 			{
 				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-				asteroids.push_back(new GreyAsteroid());
+				asteroids.push_back(new Asteroid());
 				asteroids.back()->SetDirection<int>(count);
 				asteroids.back()->setSize(MEDIUM);
 				asteroids.back()->load(asteroidTextures.getTexture(1), asteroids[index]->GetSprite().getPosition());
@@ -126,7 +126,7 @@ void PlayState::DestroyAsteroid(int index)
 			for (int count = 1; count <= 3; count++)
 			{
 				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-				asteroids.push_back(new GreyAsteroid());
+				asteroids.push_back(new Asteroid());
 				asteroids.back()->SetDirection<int>(count);
 				asteroids.back()->setSize(SMALL);
 				asteroids.back()->load(asteroidTextures.getTexture(2), asteroids[index]->GetSprite().getPosition());
@@ -153,7 +153,7 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 	{
 		uint16 position = std::rand() % 785;
 		float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-		asteroids.push_back(new GreyAsteroid());
+		asteroids.push_back(new Asteroid());
 		asteroids.back()->load(asteroidTextures.getTexture(0), sf::Vector2f((float)position, -50));
 		asteroids.back()->setSize(LARGE);
 		asteroids.back()->SetMaxHitPoints(5);

@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include <fstream>
 #include "Player.h"
-#include "GreyAsteroid.h"
+#include "Asteroid.h"
 #include "Enemy.h"
 
 typedef int64_t int64;
