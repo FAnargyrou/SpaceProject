@@ -1,0 +1,10 @@
+{
+	"textures":
+	[
+		{"filePath":"assets/ship.png", "textureID":"player", "isSmooth":false},
+		{"filePath":"assets/laserBlue07.png", "textureID":"missile", "isSmooth":false},
+		{"filePath":"assets/meteorGrey_big4.png", "textureID":"lGreyAsteroid", "isSmooth":true},
+		{"filePath":"assets/meteorGrey_med1.png", "textureID":"mGreyAsteroid", "isSmooth":true},
+		{"filePath":"assets/meteorGrey_small2.png", "textureID":"sGreyAsteroid", "isSmooth":true}
+	]
+}

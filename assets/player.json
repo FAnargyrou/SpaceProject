@@ -1,9 +1,0 @@
-{
-	"textures":
-	[
-		{"filePath":"assets/ship.png", "textureID":"player"
-, "isSmooth":false, "index":0},
-		{"filePath":"assets/laserBlue07.png", "textureID":"missile"
-, "isSmooth":false, "index":1}
-	]
-}

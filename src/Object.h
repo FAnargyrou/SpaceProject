@@ -22,11 +22,46 @@ namespace mDir
 	};
 }
 
-enum Size
+enum Type
 {
-	LARGE = 30,
-	MEDIUM = 20,
-	SMALL = 10
+	ASTEROID = 0,
+	PLAYER = 1,
+	ENEMY = 2
+};
+
+struct ObjectData
+{
+public:
+	ObjectData(std::string id, std::string textureId, std::string type, uint8 hitPoints, bool randomlySpawned, uint8 size, sf::Vector2f maxSpeed, std::string parentId);
+
+	Type GetType();
+	std::string GetParent();
+	std::string GetId();
+	std::string GetTextureId();
+	uint8 GetHitPoints();
+	uint8 GetSize();
+	bool IsRandomlySpawned();
+private:
+	std::string _id;
+	std::string _textureId;
+	Type _type;
+	sf::Vector2f _maxSpeed;
+	uint8 _hitPoints;
+	uint8 _size;
+	bool _randomlySpawned;
+	std::string _parentId;
+};
+
+class ObjectDataProcessor
+{
+public:
+	//Singleton pattern
+	static ObjectDataProcessor& Instance();
+
+	ObjectData* FindObjectChild(const std::vector<ObjectData*> objectList, std::string name);
+private:
+	ObjectDataProcessor() {}
+	static ObjectDataProcessor* instance;
 };
 
 //Base class for every enemy, missiles and pickups in the game (including player)
@@ -36,7 +71,7 @@ public:
 	Object();
 
 	//set bLoadRect to true if the object is using an animated sprite sheet
-	virtual void load(std::string id, sf::Vector2f position, bool bLoadRect = false);
+	virtual void load(ObjectData* objectData, sf::Vector2f position, bool bLoadRect = false);
 
 	//Change texture; Return true if successful false if already changed
 	bool changeTexture(std::string id);
@@ -89,8 +124,10 @@ public:
 	void UpdateImmunity(sf::Time deltaTime, bool bIsFlashing = false);
 	bool IsImmune();
 
-	Size GetSize();
-	void setSize(Size size);
+	uint8 GetSize();
+	void setSize(uint8 size);
+
+	std::string GetObjectDataName();
 protected:
 	//Sets sprite origin relative to the current sprite
 	void SetCenter();
@@ -98,11 +135,12 @@ protected:
 	sf::Sprite sprite;
 	sf::Vector2f velocity; //use velocity for speed increasing
 	sf::Vector2f movement; //use movement for every move effect desired
-	Size size;
+	uint8 size;
 	std::string tID;
 	//Holds the ID for the explosion texture
 	static std::string explosionID;
 
+	std::string objectDataName;
 
 	//This variable is for time measuring (To be used with update(sf::Time deltaTime))
 	sf::Time lastFrame;
@@ -117,16 +155,17 @@ protected:
 	bool bIsDead;
 	bool bIsExploding;
 	bool bIsImmune;
-	int hitPoints;
+	uint8 hitPoints;
 };
 
-class ObjectTexture
+struct ObjectTexture
 {
 public:
-	void setTexture(int index, std::string id);
+	void setTexture(uint16 index, std::string id);
 	std::string getTexture(int index);
 private:
-	std::map<int, std::vector<std::string>> texturesID;
+	std::map<uint16, std::vector<std::string>> texturesID;
 };
+
 
 #endif

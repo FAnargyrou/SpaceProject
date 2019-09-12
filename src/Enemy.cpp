@@ -13,7 +13,6 @@ Enemy::Enemy(int healthPoints)
 	velocity.x = 0.1f;
 	velocity.y = 0.1f;
 	hitPoints = healthPoints;
-	size = SMALL;
 }
 
 void Enemy::update(sf::Time deltaTime)

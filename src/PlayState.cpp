@@ -9,12 +9,13 @@
 
 void PlayState::load()
 {
-	loader.LoadContent("assets/GreyAsteroid.json", &asteroidTextures);
-	loader.LoadContent("assets/Player.json", &playerTextures);
-	loader.LoadContent("assets/Enemy.json", &enemyTextures);
+	loader.LoadTextures("assets/textures.json");
+	loader.LoadObjectData("assets/ObjectData.json", objectList);
 
-	player.load(playerTextures.getTexture(0), sf::Vector2f(400, 600));
-	enemy.load(enemyTextures.getTexture(0), sf::Vector2f(40, 40));
+	for(ObjectData* data : objectList)
+		if(data->GetType() == Type::PLAYER)
+			player.load(data, sf::Vector2f(400, 600));
+	//enemy.load(enemyTextures.getTexture(0), sf::Vector2f(40, 40));
 
 	Content::Instance().load("background", "assets/purple.png", false, true);
 	background.setTexture(Content::Instance().get("background"));
@@ -105,34 +106,20 @@ void PlayState::DestroyAsteroid(int index)
 {
 	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x / 2) && !asteroids[index]->IsDivided())
 	{
-		if (asteroids[index]->GetSize() == LARGE)
+		if (ObjectData* data = ObjectDataProcessor::Instance().FindObjectChild(objectList, asteroids[index]->GetObjectDataName()))
 		{
 			float velocity;
 			for (int count = 1; count <= 3; count++)
 			{
 				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-				asteroids.push_back(new Asteroid());
-				asteroids.back()->SetDirection<int>(count);
-				asteroids.back()->setSize(MEDIUM);
-				asteroids.back()->load(asteroidTextures.getTexture(1), asteroids[index]->GetSprite().getPosition());
-				asteroids.back()->SetMaxHitPoints(3);
-				asteroids.back()->SetMovement(0, velocity);
-				asteroids.back()->SetImmunity(1.f);
-			}
-		}
-		if (asteroids[index]->GetSize() == MEDIUM)
-		{
-			float velocity;
-			for (int count = 1; count <= 3; count++)
-			{
-				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-				asteroids.push_back(new Asteroid());
-				asteroids.back()->SetDirection<int>(count);
-				asteroids.back()->setSize(SMALL);
-				asteroids.back()->load(asteroidTextures.getTexture(2), asteroids[index]->GetSprite().getPosition());
-				asteroids.back()->SetMaxHitPoints(1);
-				asteroids.back()->SetMovement(0, velocity);
-				asteroids.back()->SetImmunity(1.f);
+				if (Asteroid* asteroid = new Asteroid())
+				{
+					asteroid->load(data, asteroids[index]->GetSprite().getPosition());
+					asteroid->SetDirection<int>(count);
+					asteroid->SetMovement(0, velocity);
+					asteroid->SetImmunity(1.f);
+					asteroids.push_back(asteroid);
+				}
 			}
 		}
 		asteroids[index]->SetDivided(true);
@@ -142,7 +129,7 @@ void PlayState::DestroyAsteroid(int index)
 		delete asteroids[index];
 		asteroids.erase(asteroids.begin() + index);
 	}
-
+	
 
 }
 
@@ -151,14 +138,25 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 	SpawnDelay += deltaTime;
 	if (SpawnDelay.asSeconds() > 3)
 	{
-		uint16 position = std::rand() % 785;
-		float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-		asteroids.push_back(new Asteroid());
-		asteroids.back()->load(asteroidTextures.getTexture(0), sf::Vector2f((float)position, -50));
-		asteroids.back()->setSize(LARGE);
-		asteroids.back()->SetMaxHitPoints(5);
-		asteroids.back()->SetMovement(0, velocity);
-		SpawnDelay = SpawnDelay.Zero;
+		for (ObjectData* objectData : objectList)
+		{
+			if (objectData->GetType() == Type::ASTEROID)
+			{
+				if (objectData->IsRandomlySpawned())
+				{
+					uint16 position = std::rand() % 785;
+					float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
+					if (Asteroid* asteroid = new Asteroid())
+					{
+						asteroid->load(objectData, sf::Vector2f((float)position, -50));
+						asteroid->SetMovement(0, velocity);
+						asteroids.push_back(asteroid);
+						SpawnDelay = SpawnDelay.Zero;
+						break;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -174,8 +172,6 @@ void PlayState::CollideObjects(Object* Object1, Object* Object2)
 
 	result1.x = ((movement1.x * (mass1 - mass2) + (2 * mass2 * movement2.x)) / (mass1 + mass2));
 	result1.y = ((movement1.y * (mass1 - mass2) + (2 * mass2 * movement2.y)) / (mass1 + mass2));
-
-	
 
 	result2.x = ((movement2.x * (mass2 - mass1) + (2 * mass1 * movement1.x)) / (mass1 + mass2));
 	result2.y = ((movement2.y * (mass2 - mass1) + (2 * mass1 * movement1.y)) / (mass1 + mass2));

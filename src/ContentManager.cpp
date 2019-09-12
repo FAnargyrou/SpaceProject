@@ -8,11 +8,13 @@
 
 #include "ContentManager.h"
 
-ContentManager* ContentManager::instance = NULL;
+
+
+ContentManager* ContentManager::instance = nullptr;
 
 ContentManager& ContentManager::Instance()
 {
-	if(instance == NULL)
+	if(instance == nullptr)
 		instance = new ContentManager();
 	return *instance;
 }
@@ -27,6 +29,7 @@ void ContentManager::load(std::string id, std::string fileName, bool bIsSmooth, 
 
 	textureMap.insert(std::make_pair(id, std::move(texture)));
 }
+
 
 sf::Texture& ContentManager::get(std::string id)
 {

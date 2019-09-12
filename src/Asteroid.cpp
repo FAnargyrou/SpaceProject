@@ -51,9 +51,9 @@ void Asteroid::update(sf::Time deltaTime)
 	else
 	{
 		float scale;
-		if (size == LARGE)
+		if (size >= 30)
 			scale = 2.f;
-		else if (size == SMALL)
+		else if (size <= 10)
 			scale = 0.5f;
 		else
 			scale = 1.f;

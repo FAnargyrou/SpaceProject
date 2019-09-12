@@ -38,6 +38,8 @@ private:
 	ObjectTexture playerTextures;
 	ObjectTexture enemyTextures;
 
+	std::vector<ObjectData*> objectList;
+
 	ContentLoader loader;
 };
 #endif

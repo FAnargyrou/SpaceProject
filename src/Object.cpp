@@ -7,6 +7,74 @@
 
 #include "Object.h"
 
+ObjectData::ObjectData(std::string id, std::string textureId, std::string type, uint8 hitPoints, bool randomlySpawned, uint8 size, sf::Vector2f maxSpeed, std::string parentId)
+	: _id(id), _textureId(textureId), _hitPoints(hitPoints), _randomlySpawned(randomlySpawned), _size(size), _maxSpeed(maxSpeed)
+{
+	if (parentId != "NULL" && parentId != _id)
+		_parentId = parentId;
+	if (type == "Asteroid")
+		_type = ASTEROID;
+	else if (type == "Player")
+		_type = PLAYER;
+	else if (type == "Enemy")
+		_type = ENEMY;
+}
+
+Type ObjectData::GetType()
+{
+	return _type;
+}
+
+std::string ObjectData::GetParent()
+{
+	return _parentId;
+}
+
+std::string ObjectData::GetId()
+{
+	return _id;
+}
+
+std::string ObjectData::GetTextureId()
+{
+	return _textureId;
+}
+
+uint8 ObjectData::GetHitPoints()
+{
+	return _hitPoints;
+}
+
+uint8 ObjectData::GetSize()
+{
+	return _size;
+}
+
+bool ObjectData::IsRandomlySpawned()
+{
+	return _randomlySpawned;
+}
+
+
+
+ObjectDataProcessor* ObjectDataProcessor::instance = nullptr;
+
+ObjectDataProcessor& ObjectDataProcessor::Instance()
+{
+	if (instance == nullptr)
+		instance = new ObjectDataProcessor();
+	return *instance;
+}
+
+ObjectData* ObjectDataProcessor::FindObjectChild(const std::vector<ObjectData*> objectList, std::string name)
+{
+	for (ObjectData* data : objectList)
+		if (data->GetParent() == name)
+			return data;
+	return nullptr;
+}
+
+
 std::string Object::explosionID = "explosion";
 
 Object::Object()
@@ -18,10 +86,16 @@ Object::Object()
 }
 
 //Before definition
-void Object::load(std::string id, sf::Vector2f position, bool bLoadRect)
+void Object::load(ObjectData* objectData, sf::Vector2f position, bool bLoadRect)
 {
-	
+	std::string id = objectData->GetTextureId();
 	sprite.setTexture(Content::Instance().get(id));
+
+	SetMaxHitPoints(objectData->GetHitPoints());
+	size = objectData->GetSize();
+
+	objectDataName = objectData->GetId();
+	
 	sprite.setPosition(position);
 	if (bLoadRect)
 		sprite.setTextureRect(rect);
@@ -220,21 +294,26 @@ bool Object::IsImmune()
 	return bIsImmune;
 }
 
-Size Object::GetSize()
+uint8 Object::GetSize()
 {
 	return size;
 }
 
-void Object::setSize(Size size)
+void Object::setSize(uint8 size)
 {
 	this->size = size;
+}
+
+std::string Object::GetObjectDataName()
+{
+	return objectDataName;
 }
 
 /*
 ObjectTexture implementation
 */
 
-void ObjectTexture::setTexture(int index, std::string id)
+void ObjectTexture::setTexture(uint16 index, std::string id)
 {
 	std::vector<std::string>::iterator it = std::find(texturesID[index].begin(),texturesID[index].end(), id);
 	if (it != texturesID[index].end())
@@ -247,3 +326,4 @@ std::string ObjectTexture::getTexture(int index)
 {
 	return texturesID[index].back();
 }
+
