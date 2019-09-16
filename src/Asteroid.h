@@ -10,8 +10,6 @@
 #include "Object.h"
 
 
-	//To differ the 3 sizes of asteroids (Large, medium or small)
-
 class Asteroid : public Object
 {
 public:

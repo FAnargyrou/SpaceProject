@@ -15,7 +15,6 @@ void PlayState::load()
 	for(ObjectData* data : objectList)
 		if(data->GetType() == Type::PLAYER)
 			player.load(data, sf::Vector2f(400, 600));
-	//enemy.load(enemyTextures.getTexture(0), sf::Vector2f(40, 40));
 
 	Content::Instance().load("background", "assets/purple.png", false, true);
 	background.setTexture(Content::Instance().get("background"));
@@ -43,19 +42,12 @@ void PlayState::update(sf::Time deltaTime)
 		if (!asteroids[astArray]->GetDeadStatus())
 		{
 			for (int secondAstArray = 0; secondAstArray < asteroids.size(); secondAstArray++)
-			{
 				if (secondAstArray != astArray)
-				{
 					if (!asteroids[secondAstArray]->GetDeadStatus())
-					{
 						if (CircleTest(asteroids[astArray]->GetSprite(), asteroids[secondAstArray]->GetSprite()) &&
 							!asteroids[astArray]->IsImmune() && !asteroids[secondAstArray]->IsImmune())
-						{
 							CollideObjects(asteroids[astArray], asteroids[secondAstArray]);
-						}
-					}
-				}
-			 }
+
 			if (CircleTest(player.GetSprite(), asteroids[astArray]->GetSprite()))
 			{
 				if (!player.IsImmune())
@@ -139,9 +131,7 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 	if (SpawnDelay.asSeconds() > 3)
 	{
 		for (ObjectData* objectData : objectList)
-		{
 			if (objectData->GetType() == Type::ASTEROID)
-			{
 				if (objectData->IsRandomlySpawned())
 				{
 					uint16 position = std::rand() % 785;
@@ -155,8 +145,6 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 						break;
 					}
 				}
-			}
-		}
 	}
 }
 

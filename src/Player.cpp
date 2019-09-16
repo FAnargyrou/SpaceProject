@@ -13,7 +13,6 @@ Player::Player()
 	velocity.x = 0.1f;
 	velocity.y = 0.1f;
 	hitPoints = 3;
-//	size = SMALL;
 }
 void Player::update(sf::Time deltaTime)
 {
