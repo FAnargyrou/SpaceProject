@@ -24,12 +24,12 @@ sf::Sprite Ship::getMissileSprite(int index)
 	return missiles[index];
 }
 
-void Ship::destroyMissile(int index)
+void Ship::DestroyMissile(int index)
 {
 	missiles.erase(missiles.begin() + index);
 }
 
-void Ship::fireMissile(std::string texture, mDir::Direction dir)
+void Ship::FireMissile(std::string texture, mDir::Direction dir)
 {
 	sf::Sprite missile;
 	missile.setTexture((Content::Instance().get(texture)));
@@ -89,17 +89,17 @@ void Ship::Stop()
 	}
 }
 
-void Ship::updateMissiles()
+void Ship::UpdateMissiles()
 {
 	for (int i = 0; i < missiles.size(); i++)
 	{
 		missiles[i].move(0, -10.f);
 		if (missiles[i].getPosition().x > 800 || missiles[i].getPosition().x < 0 || missiles[i].getPosition().y > 600 || missiles[i].getPosition().y < 0)
-			destroyMissile(i);
+			DestroyMissile(i);
 	}
 }
 
-void Ship::setMaxSpeed(float speed)
+void Ship::SetMaxSpeed(float speed)
 {
 	maxSpeed = speed;
 }

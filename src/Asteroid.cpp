@@ -1,6 +1,5 @@
 /*				Asteroid.cpp
 *				Created: 01/03/2015
-*				Last Update: 02/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -13,12 +12,12 @@ Asteroid::Asteroid() : bDivided(false)
 
 }
 
-bool Asteroid::isDivided()
+bool Asteroid::IsDivided()
 {
 	return bDivided;
 }
 
-void Asteroid::setDivided(bool isDivided)
+void Asteroid::SetDivided(bool isDivided)
 {
 	bDivided = isDivided;
 }
@@ -30,7 +29,7 @@ void Asteroid::update(sf::Time deltaTime)
 	{
 		sprite.rotate(0.5f);
 		sprite.move(movement);
-		if (isOffBounds())
+		if (IsOffBounds())
 		{
 			if (sprite.getPosition().x > 400)
 				SetDirection<mDir::Direction>(mDir::LEFT);
@@ -52,17 +51,17 @@ void Asteroid::update(sf::Time deltaTime)
 	else
 	{
 		float scale;
-		if (size == LARGE)
+		if (size >= 30)
 			scale = 2.f;
-		else if (size == SMALL)
+		else if (size <= 10)
 			scale = 0.5f;
 		else
 			scale = 1.f;
-		explodeObject(deltaTime, scale);
+		ExplodeObject(deltaTime, scale);
 	}
 }
 
-bool Asteroid::isOffBounds()
+bool Asteroid::IsOffBounds()
 {
 	if (sprite.getPosition().x < 0)
 		return true;

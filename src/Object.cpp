@@ -1,12 +1,79 @@
 /*				Object.cpp
 *				Created: 28/02/2015
-*				Last Update: 07/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
 */
 
 #include "Object.h"
+
+ObjectData::ObjectData(std::string id, std::string textureId, std::string type, uint8 hitPoints, bool randomlySpawned, uint8 size, sf::Vector2f maxSpeed, std::string parentId)
+	: _id(id), _textureId(textureId), _hitPoints(hitPoints), _randomlySpawned(randomlySpawned), _size(size), _maxSpeed(maxSpeed)
+{
+	if (parentId != "NULL" && parentId != _id)
+		_parentId = parentId;
+	if (type == "Asteroid")
+		_type = ASTEROID;
+	else if (type == "Player")
+		_type = PLAYER;
+	else if (type == "Enemy")
+		_type = ENEMY;
+}
+
+Type ObjectData::GetType()
+{
+	return _type;
+}
+
+std::string ObjectData::GetParent()
+{
+	return _parentId;
+}
+
+std::string ObjectData::GetId()
+{
+	return _id;
+}
+
+std::string ObjectData::GetTextureId()
+{
+	return _textureId;
+}
+
+uint8 ObjectData::GetHitPoints()
+{
+	return _hitPoints;
+}
+
+uint8 ObjectData::GetSize()
+{
+	return _size;
+}
+
+bool ObjectData::IsRandomlySpawned()
+{
+	return _randomlySpawned;
+}
+
+
+
+ObjectDataProcessor* ObjectDataProcessor::instance = nullptr;
+
+ObjectDataProcessor& ObjectDataProcessor::Instance()
+{
+	if (instance == nullptr)
+		instance = new ObjectDataProcessor();
+	return *instance;
+}
+
+ObjectData* ObjectDataProcessor::FindObjectChild(const std::vector<ObjectData*> objectList, std::string name)
+{
+	for (ObjectData* data : objectList)
+		if (data->GetParent() == name)
+			return data;
+	return nullptr;
+}
+
 
 std::string Object::explosionID = "explosion";
 
@@ -19,14 +86,20 @@ Object::Object()
 }
 
 //Before definition
-void Object::load(std::string id, sf::Vector2f position, bool bLoadRect)
+void Object::load(ObjectData* objectData, sf::Vector2f position, bool bLoadRect)
 {
-	
+	std::string id = objectData->GetTextureId();
 	sprite.setTexture(Content::Instance().get(id));
+
+	SetMaxHitPoints(objectData->GetHitPoints());
+	size = objectData->GetSize();
+
+	objectDataName = objectData->GetId();
+	
 	sprite.setPosition(position);
 	if (bLoadRect)
 		sprite.setTextureRect(rect);
-	setCenter();
+	SetCenter();
 	tID = id;
 }
 
@@ -110,30 +183,30 @@ void Object::Animate(sf::Time deltaTime, int milliseconds, int width, int height
 }
 
 
-void Object::setStatus(bool isDead) //set alive status
+void Object::SetDeadStatus(bool isDead) //set alive status
 {
 	bIsDead = isDead;
 }
 
-bool Object::getStatus()
+bool Object::GetDeadStatus()
 {
 	return bIsDead;
 }
 
-bool Object::waitAnimation(int waitPoint)
+bool Object::WaitAnimation(int waitPoint)
 {
 	if (sprite.getTextureRect().left == waitPoint - sprite.getLocalBounds().width)
 		return true;
 	return false;
 }
 
-void Object::setCenter()
+void Object::SetCenter()
 {
 	auto bounds = sprite.getLocalBounds();
 	sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
-bool Object::isOffBounds()
+bool Object::IsOffBounds()
 {
 	if (sprite.getPosition().x < 0)
 		return true;
@@ -146,7 +219,7 @@ bool Object::isOffBounds()
 	return false;
 }
 
-void Object::damageObject(int hit)
+void Object::DamageObject(int hit)
 {
 	if (hit < 1)
 		hit = 1;
@@ -155,17 +228,17 @@ void Object::damageObject(int hit)
 	sprite.setColor(sf::Color(135,252,255,255));
 }
 
-int Object::getHitPoints()
+int Object::GetHitPoints()
 {
 	return hitPoints;
 }
 
-void Object::setMaxHitPoints(int hp)
+void Object::SetMaxHitPoints(int hp)
 {
 	hitPoints = hp;
 }
 
-void Object::explodeObject(sf::Time deltaTime, float scale )
+void Object::ExplodeObject(sf::Time deltaTime, float scale )
 {
 	if (changeTexture(explosionID))
 	{
@@ -176,7 +249,7 @@ void Object::explodeObject(sf::Time deltaTime, float scale )
 		rect.width = 64;
 		rect.height = 64;
 		sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-		setCenter();
+		SetCenter();
 		sprite.scale(scale, scale);
 		bIsExploding = true;
 	}
@@ -216,26 +289,31 @@ void Object::UpdateImmunity(sf::Time deltaTime, bool bIsFlashing)
 	}
 }
 
-bool Object::isImmune()
+bool Object::IsImmune()
 {
 	return bIsImmune;
 }
 
-Size Object::GetSize()
+uint8 Object::GetSize()
 {
 	return size;
 }
 
-void Object::setSize(Size size)
+void Object::setSize(uint8 size)
 {
 	this->size = size;
+}
+
+std::string Object::GetObjectDataName()
+{
+	return objectDataName;
 }
 
 /*
 ObjectTexture implementation
 */
 
-void ObjectTexture::setTexture(int index, std::string id)
+void ObjectTexture::setTexture(uint16 index, std::string id)
 {
 	std::vector<std::string>::iterator it = std::find(texturesID[index].begin(),texturesID[index].end(), id);
 	if (it != texturesID[index].end())
@@ -248,3 +326,4 @@ std::string ObjectTexture::getTexture(int index)
 {
 	return texturesID[index].back();
 }
+

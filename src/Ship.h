@@ -14,14 +14,14 @@ class Ship : public Object
 {
 public:
 	Ship();
-	void updateMissiles();
+	void UpdateMissiles();
 	
 	std::vector<sf::Sprite> GetMissiles();
 	sf::Sprite getMissileSprite(int index);
-	void destroyMissile(int index);
-	void setMaxSpeed(float speed);
+	void DestroyMissile(int index);
+	void SetMaxSpeed(float speed);
 protected:
-	void fireMissile(std::string texture, mDir::Direction dir = mDir::Direction::UP);
+	void FireMissile(std::string texture, mDir::Direction dir = mDir::Direction::UP);
 	void MoveUp();
 	void MoveDown();
 	void MoveLeft();

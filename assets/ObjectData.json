@@ -1,0 +1,42 @@
+{
+	"data":
+	[
+		{
+			"name":"player",
+			"hitPoints":3,
+			"size":10,
+			"maxVelocityY":5.0,
+			"maxVelocityX":5.0,
+			"type":"player",
+			"textureId":"player"
+		},
+		{
+			"name":"LargeGreyAsteroid",
+			"hitPoints":5,
+			"size":30,
+			"maxVelocityY":1.0,
+			"RandomSpawn":true,
+			"type":"Asteroid",
+			"textureId":"lGreyAsteroid"
+			
+		},
+		{
+			"name":"MediumGreyAsteroid",
+			"hitPoints":3,
+			"size":20,
+			"parent":"LargeGreyAsteroid",
+			"RandomSpawn":true,
+			"type":"Asteroid",
+			"textureId":"mGreyAsteroid"
+		},
+		{
+			"name":"SmallGreyAsteroid",
+			"hitPoints":1,
+			"size":10,
+			"parent":"MediumGreyAsteroid",
+			"RandomSpawn":true,
+			"type":"Asteroid",
+			"textureId":"sGreyAsteroid"
+		}
+	]
+}

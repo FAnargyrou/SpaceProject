@@ -1,6 +1,5 @@
 /*				Enemy.cpp
 *				Created: 26/05/2015
-*				Last Update: 26/05/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -13,8 +12,6 @@ Enemy::Enemy(int healthPoints)
 	maxSpeed = 5.f;
 	velocity.x = 0.1f;
 	velocity.y = 0.1f;
-	hitPoints = healthPoints;
-	size = SMALL;
 }
 
 void Enemy::update(sf::Time deltaTime)
@@ -25,5 +22,5 @@ void Enemy::update(sf::Time deltaTime)
 		sprite.move(movement);
 	}
 	else
-		explodeObject(deltaTime);
+		ExplodeObject(deltaTime);
 }

@@ -1,6 +1,5 @@
 /*				Player.cpp
 *				Created: 28/02/2015
-*				Last Update: 07/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -14,7 +13,6 @@ Player::Player()
 	velocity.x = 0.1f;
 	velocity.y = 0.1f;
 	hitPoints = 3;
-	size = SMALL;
 }
 void Player::update(sf::Time deltaTime)
 {
@@ -50,12 +48,12 @@ void Player::update(sf::Time deltaTime)
 			fireDelay += deltaTime;
 			if (fireDelay.asMilliseconds() > 200)
 			{
-				fireMissile("missile");
+				FireMissile("missile");
 				fireDelay = fireDelay.Zero;
 			}
 		}
 		sprite.move(movement);
-		if (isOffBounds())
+		if (IsOffBounds())
 		{
 			if (sprite.getPosition().x <= 0)
 			{
@@ -82,9 +80,9 @@ void Player::update(sf::Time deltaTime)
 	}
 	else
 	{
-		explodeObject(deltaTime);
+		ExplodeObject(deltaTime);
 	}
-	updateMissiles();
+	UpdateMissiles();
 }
 
 bool Player::isMoving()

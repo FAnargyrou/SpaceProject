@@ -1,6 +1,5 @@
 /*				Asteroid.h
 *				Created: 01/03/2015
-*				Last Update: 23/04/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -11,8 +10,6 @@
 #include "Object.h"
 
 
-	//To differ the 3 sizes of asteroids (Large, medium or small)
-
 class Asteroid : public Object
 {
 public:
@@ -21,12 +18,12 @@ public:
 	template<typename DIR>
 	void SetDirection(DIR dir);
 
-	bool isDivided();
-	void setDivided(bool isDivided);
+	bool IsDivided();
+	void SetDivided(bool isDivided);
 	void SetOppositeDirection();
 	virtual void update(sf::Time deltaTime) override;
 
-	virtual bool isOffBounds() override;
+	virtual bool IsOffBounds() override;
 
 protected:
 	bool bDivided;

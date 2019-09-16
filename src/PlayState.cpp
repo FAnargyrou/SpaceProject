@@ -1,6 +1,5 @@
 /*				PlayState.cpp
 *				Created: 20/04/2015
-*				Last Update: 26/05/2015
 *
 *				Created by: Felipe Anargyrou
 *				E-Mail : anargyrou4@hotmail.com
@@ -10,12 +9,12 @@
 
 void PlayState::load()
 {
-	loader.LoadContent("assets/GreyAsteroid.json", &asteroidTextures);
-	loader.LoadContent("assets/Player.json", &playerTextures);
-	loader.LoadContent("assets/Enemy.json", &enemyTextures);
+	loader.LoadTextures("assets/textures.json");
+	loader.LoadObjectData("assets/ObjectData.json", objectList);
 
-	player.load(playerTextures.getTexture(0), sf::Vector2f(400, 600));
-	enemy.load(enemyTextures.getTexture(0), sf::Vector2f(40, 40));
+	for(ObjectData* data : objectList)
+		if(data->GetType() == Type::PLAYER)
+			player.load(data, sf::Vector2f(400, 600));
 
 	Content::Instance().load("background", "assets/purple.png", false, true);
 	background.setTexture(Content::Instance().get("background"));
@@ -40,32 +39,25 @@ void PlayState::update(sf::Time deltaTime)
 	for (int astArray = 0; astArray < asteroids.size(); astArray++)
 	{
 		asteroids[astArray]->update(deltaTime);
-		if (!asteroids[astArray]->getStatus())
+		if (!asteroids[astArray]->GetDeadStatus())
 		{
 			for (int secondAstArray = 0; secondAstArray < asteroids.size(); secondAstArray++)
-			{
 				if (secondAstArray != astArray)
-				{
-					if (!asteroids[secondAstArray]->getStatus())
-					{
+					if (!asteroids[secondAstArray]->GetDeadStatus())
 						if (CircleTest(asteroids[astArray]->GetSprite(), asteroids[secondAstArray]->GetSprite()) &&
-							!asteroids[astArray]->isImmune() && !asteroids[secondAstArray]->isImmune())
-						{
+							!asteroids[astArray]->IsImmune() && !asteroids[secondAstArray]->IsImmune())
 							CollideObjects(asteroids[astArray], asteroids[secondAstArray]);
-						}
-					}
-				}
-			 }
+
 			if (CircleTest(player.GetSprite(), asteroids[astArray]->GetSprite()))
 			{
-				if (!player.isImmune())
+				if (!player.IsImmune())
 				{
 					//player.damageObject();
-					asteroids[astArray]->damageObject();
+					asteroids[astArray]->DamageObject();
 					CollideObjects(&player, asteroids[astArray]);
 				}
-				if (player.getHitPoints() == 0)
-					player.setStatus(true);
+				if (player.GetHitPoints() == 0)
+					player.SetDeadStatus(true);
 				else
 					player.SetImmunity(2);
 				
@@ -74,16 +66,16 @@ void PlayState::update(sf::Time deltaTime)
 			{
 				if (CircleTest(asteroids[astArray]->GetSprite(), player.getMissileSprite(misArray)))
 				{
-					asteroids[astArray]->damageObject();
-					player.destroyMissile(misArray);
+					asteroids[astArray]->DamageObject();
+					player.DestroyMissile(misArray);
 				}
 
 			}
-			if (asteroids[astArray]->getHitPoints() == 0)
-				asteroids[astArray]->setStatus(true);
+			if (asteroids[astArray]->GetHitPoints() == 0)
+				asteroids[astArray]->SetDeadStatus(true);
 		}
 		else
-			destroyAsteroid(astArray);
+			DestroyAsteroid(astArray);
 
 	}
 	player.update(deltaTime);
@@ -102,47 +94,34 @@ void PlayState::render(sf::RenderWindow* window)
 	
 }
 
-void PlayState::destroyAsteroid(int index)
+void PlayState::DestroyAsteroid(int index)
 {
-	if (asteroids[index]->waitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x / 2) && !asteroids[index]->isDivided())
+	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x / 2) && !asteroids[index]->IsDivided())
 	{
-		if (asteroids[index]->GetSize() == LARGE)
+		if (ObjectData* data = ObjectDataProcessor::Instance().FindObjectChild(objectList, asteroids[index]->GetObjectDataName()))
 		{
 			float velocity;
 			for (int count = 1; count <= 3; count++)
 			{
 				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-				asteroids.push_back(new GreyAsteroid());
-				asteroids.back()->SetDirection<int>(count);
-				asteroids.back()->setSize(MEDIUM);
-				asteroids.back()->load(asteroidTextures.getTexture(1), asteroids[index]->GetSprite().getPosition());
-				asteroids.back()->setMaxHitPoints(3);
-				asteroids.back()->SetMovement(0, velocity);
-				asteroids.back()->SetImmunity(1.f);
+				if (Asteroid* asteroid = new Asteroid())
+				{
+					asteroid->load(data, asteroids[index]->GetSprite().getPosition());
+					asteroid->SetDirection<int>(count);
+					asteroid->SetMovement(0, velocity);
+					asteroid->SetImmunity(1.f);
+					asteroids.push_back(asteroid);
+				}
 			}
 		}
-		if (asteroids[index]->GetSize() == MEDIUM)
-		{
-			float velocity;
-			for (int count = 1; count <= 3; count++)
-			{
-				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-				asteroids.push_back(new GreyAsteroid());
-				asteroids.back()->SetDirection<int>(count);
-				asteroids.back()->setSize(SMALL);
-				asteroids.back()->load(asteroidTextures.getTexture(2), asteroids[index]->GetSprite().getPosition());
-				asteroids.back()->setMaxHitPoints(1);
-				asteroids.back()->SetMovement(0, velocity);
-				asteroids.back()->SetImmunity(1.f);
-			}
-		}
-		asteroids[index]->setDivided(true);
+		asteroids[index]->SetDivided(true);
 	}
-	if (asteroids[index]->waitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x))
+	if (asteroids[index]->WaitAnimation(asteroids[index]->GetSprite().getTexture()->getSize().x))
 	{
+		delete asteroids[index];
 		asteroids.erase(asteroids.begin() + index);
 	}
-
+	
 
 }
 
@@ -151,14 +130,21 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 	SpawnDelay += deltaTime;
 	if (SpawnDelay.asSeconds() > 3)
 	{
-		uint16 position = std::rand() % 785;
-		float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
-		asteroids.push_back(new GreyAsteroid());
-		asteroids.back()->load(asteroidTextures.getTexture(0), sf::Vector2f((float)position, -50));
-		asteroids.back()->setSize(LARGE);
-		asteroids.back()->setMaxHitPoints(5);
-		asteroids.back()->SetMovement(0, velocity);
-		SpawnDelay = SpawnDelay.Zero;
+		for (ObjectData* objectData : objectList)
+			if (objectData->GetType() == Type::ASTEROID)
+				if (objectData->IsRandomlySpawned())
+				{
+					uint16 position = std::rand() % 785;
+					float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
+					if (Asteroid* asteroid = new Asteroid())
+					{
+						asteroid->load(objectData, sf::Vector2f((float)position, -50));
+						asteroid->SetMovement(0, velocity);
+						asteroids.push_back(asteroid);
+						SpawnDelay = SpawnDelay.Zero;
+						break;
+					}
+				}
 	}
 }
 
@@ -174,8 +160,6 @@ void PlayState::CollideObjects(Object* Object1, Object* Object2)
 
 	result1.x = ((movement1.x * (mass1 - mass2) + (2 * mass2 * movement2.x)) / (mass1 + mass2));
 	result1.y = ((movement1.y * (mass1 - mass2) + (2 * mass2 * movement2.y)) / (mass1 + mass2));
-
-	
 
 	result2.x = ((movement2.x * (mass2 - mass1) + (2 * mass1 * movement1.x)) / (mass1 + mass2));
 	result2.y = ((movement2.y * (mass2 - mass1) + (2 * mass1 * movement1.y)) / (mass1 + mass2));

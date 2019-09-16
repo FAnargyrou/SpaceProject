@@ -21,7 +21,7 @@ public:
 	virtual void load();
 	virtual void clean();
 private:
-	void destroyAsteroid(int index);
+	void DestroyAsteroid(int index);
 	void SpawnAsteroid(sf::Time deltaTime);
 
 	void CollideObjects(Object* Object1, Object* Object2);
@@ -37,6 +37,8 @@ private:
 	ObjectTexture asteroidTextures;
 	ObjectTexture playerTextures;
 	ObjectTexture enemyTextures;
+
+	std::vector<ObjectData*> objectList;
 
 	ContentLoader loader;
 };
