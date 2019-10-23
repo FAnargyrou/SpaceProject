@@ -7,10 +7,13 @@
 */
 
 #include "Game.h"
+#include "PlayState.h"
 
 Game::Game() : window(sf::VideoMode(800, 600), "SFML"), timePerFrame(sf::seconds(1.f / 60.f))
 {
-	
+	RegisterStates();
+
+	stateFactory.PushState(States::PLAY_STATE);
 }
 
 void Game::Run()
@@ -23,17 +26,20 @@ void Game::Run()
 	ContentLoader contentLoad;
 	Content::Instance().load("explosion", "assets/explosion2.png", true);
 
-	play.load();
 
 	while(window.isOpen())
 	{
-		processEvents();
-		timeSinceLastUpdate += clock.restart();
+		sf::Time dt = clock.restart();
+		timeSinceLastUpdate += dt;
 		while(timeSinceLastUpdate > timePerFrame)
 		{
+			processEvents();
 			timeSinceLastUpdate -= timePerFrame;
 			processEvents();
 			update(timePerFrame);
+			
+			if (stateFactory.IsEmpty())
+				window.close();
 		}
 		render();
 	}
@@ -57,14 +63,18 @@ void Game::processEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	play.update(deltaTime);
+	stateFactory.update(deltaTime);
 }
 
 void Game::render()
 {
 	window.setView(view);
 	window.clear();
-	play.render(&window);
+	stateFactory.render(&window);
 	window.display();
 }
 
+void Game::RegisterStates()
+{
+	stateFactory.RegisterId<PlayState>(States::PLAY_STATE);
+}
