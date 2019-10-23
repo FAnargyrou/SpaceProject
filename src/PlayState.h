@@ -10,12 +10,13 @@
 #define PLAYSTATE_H
 #include <ctime>
 #include <random>
-#include "GameState.h"
+#include "State.h"
 
-class PlayState : public GameState
+class PlayState : public State
 {
 public:
-	virtual void update(sf::Time deltaTime);
+	PlayState() {}
+	virtual bool update(sf::Time deltaTime);
 	virtual void render(sf::RenderWindow* window);
 
 	virtual void load();
@@ -32,7 +33,7 @@ private:
 	std::vector<Asteroid*> asteroids;
 
 	sf::Sprite background;
-	int bgY;
+	uint8 bgY;
 
 	ObjectTexture asteroidTextures;
 	ObjectTexture playerTextures;

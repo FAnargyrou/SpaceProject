@@ -7,7 +7,7 @@
 			"size":10,
 			"maxVelocityY":5.0,
 			"maxVelocityX":5.0,
-			"type":"player",
+			"type":"Player",
 			"textureId":"player"
 		},
 		{

@@ -6,15 +6,19 @@
 *				E-Mail : anargyrou4@hotmail.com
 */
 
-#ifndef GAMESTATE_H
-#define GAMESTATE_H
+#ifndef STATE_H
+#define STATE_H
 #include "ContentLoader.h"
 
-class GameState
+class State
 {
 public:
-	virtual void update(sf::Time deltaTime) = 0;
+	State() {}
+	typedef std::unique_ptr<State> StatePtr;
+
+	virtual bool update(sf::Time deltaTime) = 0;
 	virtual void render(sf::RenderWindow* window) = 0;
+	//virtual void HandleEvent(const sf::Event& event) = 0;
 
 	virtual void load() = 0;
 	virtual void clean() = 0;

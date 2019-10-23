@@ -8,7 +8,7 @@
 
 #ifndef GAME_H
 #define GAME_H
-#include "PlayState.h"
+#include "StateFactory.h"
 #include <stdlib.h>
 
 //This is our core class. It handles everything, from textures to player input
@@ -23,13 +23,14 @@ private:
 	void update(sf::Time deltaTime);
 	void render();
 	void processEvents();
+	
+	void RegisterStates();
 
 	sf::RenderWindow window;
-	sf::Sprite test;
 	const sf::Time timePerFrame; //Holds time passed. Best used with milliseconds
 	sf::View view;
 
-	PlayState play;
+	StateFactory stateFactory;
 
 
 };

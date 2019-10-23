@@ -28,7 +28,7 @@ void PlayState::clean()
 	asteroids.clear();
 }
 
-void PlayState::update(sf::Time deltaTime)
+bool PlayState::update(sf::Time deltaTime)
 {
 	if (bgY > -256)
 		bgY--;
@@ -80,6 +80,8 @@ void PlayState::update(sf::Time deltaTime)
 	}
 	player.update(deltaTime);
 	enemy.update(deltaTime);
+
+	return true;
 }
 
 void PlayState::render(sf::RenderWindow* window)
