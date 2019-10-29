@@ -7,6 +7,11 @@
 
 #include "PlayState.h"
 
+PlayState::PlayState(StateFactory& stateFactory, Settings settings) : State(stateFactory, settings)
+{
+
+}
+
 void PlayState::load()
 {
 	loader.LoadTextures("assets/textures.json");
@@ -16,15 +21,17 @@ void PlayState::load()
 		if(data->GetType() == Type::PLAYER)
 			player.load(data, sf::Vector2f(400, 600));
 
-	Content::Instance().load("background", "assets/purple.png", false, true);
-	background.setTexture(Content::Instance().get("background"));
+	ContentManager::Instance().load("background", "assets/purple.png", false, true);
+	background.setTexture(ContentManager::Instance().get("background"));
 	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
 
 	std::srand((uint16)std::time(NULL));
 }
 
-void PlayState::clean()
+void PlayState::clear()
 {
+	for (Asteroid* asteroid : asteroids)
+		delete asteroid;
 	asteroids.clear();
 }
 
@@ -84,16 +91,28 @@ bool PlayState::update(sf::Time deltaTime)
 	return true;
 }
 
-void PlayState::render(sf::RenderWindow* window)
+void PlayState::render()
 {
-	window->draw(background);
+	sf::RenderWindow& window = GetSettings().GetWindow();
+
+	window.draw(background);
 	for (uint8 i = 0; i < player.GetMissiles().size(); i++)
-		window->draw(player.getMissileSprite(i));
+		window.draw(player.getMissileSprite(i));
 	for (uint8 astArray = 0; astArray < asteroids.size(); astArray++)
-		window->draw(asteroids[astArray]->GetSprite());
-	window->draw(player.GetSprite());
-	window->draw(enemy.GetSprite());
+		window.draw(asteroids[astArray]->GetSprite());
+	window.draw(player.GetSprite());
+	window.draw(enemy.GetSprite());
 	
+}
+
+bool PlayState::HandleEvent(const sf::Event& event)
+{
+	if (event.type == sf::Event::KeyPressed)
+		if (event.key.code == sf::Keyboard::Escape)
+			RequestPush(States::PAUSE_STATE);
+	if (event.type == sf::Event::LostFocus)
+		RequestPush(States::PAUSE_STATE);
+	return true;
 }
 
 void PlayState::DestroyAsteroid(int index)

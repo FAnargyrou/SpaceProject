@@ -8,9 +8,15 @@
 
 #include "Game.h"
 #include "PlayState.h"
+#include "PauseState.h"
 
-Game::Game() : window(sf::VideoMode(800, 600), "SFML"), timePerFrame(sf::seconds(1.f / 60.f))
+Game::Game() : 
+	window(sf::VideoMode(800, 600), "SFML"), 
+	timePerFrame(sf::seconds(1.f / 60.f)),
+	stateFactory(State::Settings(window, font))
 {
+	font.loadFromFile("assets/kenvector_future.ttf");
+
 	RegisterStates();
 
 	stateFactory.PushState(States::PLAY_STATE);
@@ -24,7 +30,7 @@ void Game::Run()
 	view.setCenter(400, 300);
 
 	ContentLoader contentLoad;
-	Content::Instance().load("explosion", "assets/explosion2.png", true);
+	ContentManager::Instance().load("explosion", "assets/explosion2.png", true);
 
 
 	while(window.isOpen())
@@ -55,6 +61,10 @@ void Game::processEvents()
 		case sf::Event::Closed:
 			window.close();
 			break;
+		case sf::Event::KeyPressed:
+		case sf::Event::LostFocus:
+			stateFactory.HandleEvent(event);
+			break;
 		default:
 			break;
 		}
@@ -70,11 +80,12 @@ void Game::render()
 {
 	window.setView(view);
 	window.clear();
-	stateFactory.render(&window);
+	stateFactory.render();
 	window.display();
 }
 
 void Game::RegisterStates()
 {
 	stateFactory.RegisterId<PlayState>(States::PLAY_STATE);
+	stateFactory.RegisterId<PauseState>(States::PAUSE_STATE);
 }

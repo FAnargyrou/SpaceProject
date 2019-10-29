@@ -19,6 +19,6 @@ public:
 	Player();
 	void update(sf::Time deltaTime) override;
 private:
-	bool isMoving();
+	bool isFiring;
 };
 #endif

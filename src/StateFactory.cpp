@@ -1,5 +1,10 @@
 #include "StateFactory.h"
 
+StateFactory::StateFactory(State::Settings settings) : _settings(settings)
+{
+
+}
+
 void StateFactory::update(sf::Time deltaTime)
 {
 	for (auto state = _states.rbegin(); state != _states.rend(); state++ )
@@ -8,10 +13,17 @@ void StateFactory::update(sf::Time deltaTime)
 	ApplyPendingChanges();
 }
 
-void StateFactory::render(sf::RenderWindow* window)
+void StateFactory::render()
+{
+	for (auto state = _states.begin(); state != _states.end(); state++)
+		(*state)->render();
+}
+
+void StateFactory::HandleEvent(const sf::Event& event)
 {
 	for (auto state = _states.rbegin(); state != _states.rend(); state++)
-		(*state)->render(window);
+		if (!(*state)->HandleEvent(event))
+			break;
 }
 
 void StateFactory::PushState(States stateId)

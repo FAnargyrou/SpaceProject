@@ -31,7 +31,7 @@ private:
 	sf::View view;
 
 	StateFactory stateFactory;
-
+	sf::Font font;
 
 };
 #endif

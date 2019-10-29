@@ -38,5 +38,3 @@ private:
 	std::map<std::string, std::unique_ptr<sf::Texture>> textureMap;
 	static ContentManager* instance;
 };
-
-typedef ContentManager Content;

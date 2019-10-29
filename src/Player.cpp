@@ -84,10 +84,3 @@ void Player::update(sf::Time deltaTime)
 	}
 	UpdateMissiles();
 }
-
-bool Player::isMoving()
-{
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-		return false;
-	return true;
-}

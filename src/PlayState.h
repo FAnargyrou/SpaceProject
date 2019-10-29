@@ -15,12 +15,14 @@
 class PlayState : public State
 {
 public:
-	PlayState() {}
-	virtual bool update(sf::Time deltaTime);
-	virtual void render(sf::RenderWindow* window);
+	PlayState(StateFactory& stateFactory, Settings settings);
 
-	virtual void load();
-	virtual void clean();
+	void load() override;
+	void clear() override;
+	bool HandleEvent(const sf::Event& event) override;
+
+	bool update(sf::Time deltaTime) override;
+	void render() override;
 private:
 	void DestroyAsteroid(int index);
 	void SpawnAsteroid(sf::Time deltaTime);

@@ -89,7 +89,7 @@ Object::Object()
 void Object::load(ObjectData* objectData, sf::Vector2f position, bool bLoadRect)
 {
 	std::string id = objectData->GetTextureId();
-	sprite.setTexture(Content::Instance().get(id));
+	sprite.setTexture(ContentManager::Instance().get(id));
 
 	SetMaxHitPoints(objectData->GetHitPoints());
 	size = objectData->GetSize();
@@ -107,7 +107,7 @@ bool Object::changeTexture(std::string id)
 {
 	if (tID != id)
 	{
-		sprite.setTexture(Content::Instance().get(id), true);
+		sprite.setTexture(ContentManager::Instance().get(id), true);
 		tID = id;
 		return true;
 	}

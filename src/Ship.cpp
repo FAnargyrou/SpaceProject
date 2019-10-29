@@ -32,7 +32,7 @@ void Ship::DestroyMissile(int index)
 void Ship::FireMissile(std::string texture, mDir::Direction dir)
 {
 	sf::Sprite missile;
-	missile.setTexture((Content::Instance().get(texture)));
+	missile.setTexture((ContentManager::Instance().get(texture)));
 	missile.setPosition(sf::Vector2f(sprite.getPosition()));
 	missiles.push_back(missile);
 }
