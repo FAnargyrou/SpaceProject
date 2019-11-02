@@ -26,9 +26,11 @@ private:
 	
 	void RegisterStates();
 
-	sf::RenderWindow window;
+	sf::View GetLetterBoxView(sf::View view, int windowWidth, int windowHeight);
+
+	sf::RenderWindow _window;
 	const sf::Time timePerFrame; //Holds time passed. Best used with milliseconds
-	sf::View view;
+	sf::View _view;
 
 	StateFactory stateFactory;
 	sf::Font font;

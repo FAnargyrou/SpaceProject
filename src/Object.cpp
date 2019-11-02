@@ -212,9 +212,9 @@ bool Object::IsOffBounds()
 		return true;
 	if (sprite.getPosition().y < 0)
 		return true;
-	if (sprite.getPosition().x > 800)
+	if (sprite.getPosition().x > SAFEAREA_W)
 		return true;
-	if (sprite.getPosition().y > 600)
+	if (sprite.getPosition().y > SAFEAREA_H)
 		return true;
 	return false;
 }

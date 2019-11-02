@@ -20,6 +20,10 @@ typedef uint32_t uint32;
 typedef uint16_t uint16;
 typedef uint8_t uint8;
 
+#define SAFEAREA_W 1024
+#define SAFEAREA_H 768
+
+
 class ContentManager
 {
 public:

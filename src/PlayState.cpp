@@ -19,11 +19,11 @@ void PlayState::load()
 
 	for(ObjectData* data : objectList)
 		if(data->GetType() == Type::PLAYER)
-			player.load(data, sf::Vector2f(400, 600));
+			player.load(data, sf::Vector2f(SAFEAREA_W / 2, SAFEAREA_H));
 
 	ContentManager::Instance().load("background", "assets/purple.png", false, true);
 	background.setTexture(ContentManager::Instance().get("background"));
-	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
+	background.setTextureRect(sf::IntRect(0, 0, SAFEAREA_W, SAFEAREA_H));
 
 	std::srand((uint16)std::time(NULL));
 }
@@ -41,7 +41,8 @@ bool PlayState::update(sf::Time deltaTime)
 		bgY--;
 	else
 		bgY = 0;
-	background.setTextureRect(sf::IntRect(0, bgY, 800, 600));
+	background.setTextureRect(sf::IntRect(0, bgY, SAFEAREA_W, SAFEAREA_H));
+	
 	SpawnAsteroid(deltaTime);
 	for (int astArray = 0; astArray < asteroids.size(); astArray++)
 	{
@@ -155,7 +156,7 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 			if (objectData->GetType() == Type::ASTEROID)
 				if (objectData->IsRandomlySpawned())
 				{
-					uint16 position = std::rand() % 785;
+					uint16 position = std::rand() % SAFEAREA_W - 15;
 					float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
 					if (Asteroid* asteroid = new Asteroid())
 					{

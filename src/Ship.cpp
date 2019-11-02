@@ -94,7 +94,7 @@ void Ship::UpdateMissiles()
 	for (int i = 0; i < missiles.size(); i++)
 	{
 		missiles[i].move(0, -10.f);
-		if (missiles[i].getPosition().x > 800 || missiles[i].getPosition().x < 0 || missiles[i].getPosition().y > 600 || missiles[i].getPosition().y < 0)
+		if (missiles[i].getPosition().x > SAFEAREA_W || missiles[i].getPosition().x < 0 || missiles[i].getPosition().y > SAFEAREA_H || missiles[i].getPosition().y < 0)
 			DestroyMissile(i);
 	}
 }
