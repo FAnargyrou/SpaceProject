@@ -16,6 +16,7 @@ void PlayState::load()
 {
 	loader.LoadTextures("assets/textures.json");
 	loader.LoadObjectData("assets/ObjectData.json", objectList);
+	ContentManager::Instance().load("explosion", "assets/explosion2.png", true);
 
 	for (ObjectData* data : objectList)
 		if (data->GetType() == Type::PLAYER)
@@ -44,7 +45,8 @@ bool PlayState::update(sf::Time deltaTime)
 		bgY = 0;
 	background.setTextureRect(sf::IntRect(0, bgY, SAFEAREA_W, SAFEAREA_H));
 	
-	SpawnAsteroid(deltaTime);
+	// Asteroids update loop
+	Spawn(deltaTime);
 	for (int astArray = 0; astArray < asteroids.size(); astArray++)
 	{
 		asteroids[astArray]->update(deltaTime);
@@ -87,8 +89,51 @@ bool PlayState::update(sf::Time deltaTime)
 			DestroyAsteroid(astArray);
 
 	}
+
+	// Enemies update loop
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		enemies[i]->update(deltaTime);
+		if (CircleTest(player.GetSprite(), enemies[i]->GetSprite()))
+		{
+			if (!player.IsImmune())
+			{
+				enemies[i]->DamageObject();
+				player.SetImmunity(2);
+				//player.DamageObject();
+			}
+		}
+		for (int m = 0; m < enemies[i]->GetMissiles().size(); m++)
+		{
+			if (CircleTest(enemies[i]->getMissileSprite(m), player.GetSprite()))
+			{
+				if (!player.IsImmune())
+				{
+					enemies[i]->DestroyMissile(m);
+				}
+			}
+		}
+		for (int m = 0; m < player.GetMissiles().size(); m++)
+		{
+			if (CircleTest(enemies[i]->GetSprite(), player.getMissileSprite(m)))
+			{
+				enemies[i]->DamageObject();
+				player.DestroyMissile(m);
+			}
+
+		}
+
+		if (enemies[i]->GetDeadStatus())
+		{
+			if (enemies[i]->WaitAnimation(enemies[i]->GetSprite().getTexture()->getSize().x))
+			{
+				delete enemies[i];
+				enemies.erase(enemies.begin() + i);
+			}
+		}
+	}
+
 	player.update(deltaTime);
-	enemy.update(deltaTime);
 
 	return true;
 }
@@ -102,8 +147,13 @@ void PlayState::render()
 		window.draw(player.getMissileSprite(i));
 	for (uint8 astArray = 0; astArray < asteroids.size(); astArray++)
 		window.draw(asteroids[astArray]->GetSprite());
+	for (uint8 i = 0; i < enemies.size(); i++)
+	{
+		window.draw(enemies[i]->GetSprite());
+		for (uint8 m = 0; m < enemies[i]->GetMissiles().size(); m++)
+			window.draw(enemies[i]->getMissileSprite(m));
+	}
 	window.draw(player.GetSprite());
-	window.draw(enemy.GetSprite());
 	
 }
 
@@ -124,13 +174,13 @@ void PlayState::DestroyAsteroid(int index)
 		if (ObjectData* data = ObjectDataProcessor::Instance().FindObjectChild(objectList, asteroids[index]->GetObjectDataName()))
 		{
 			float velocity;
-			for (int count = 1; count <= 3; count++)
+			for (int count = -1; count <= 1; count++)
 			{
 				velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
 				if (Asteroid* asteroid = new Asteroid())
 				{
 					asteroid->load(data, asteroids[index]->GetSprite().getPosition());
-					asteroid->SetDirection<int>(count);
+					asteroid->SetDirection((float)count);
 					asteroid->SetMovement(0, velocity);
 					asteroid->SetImmunity(1.f);
 					asteroids.push_back(asteroid);
@@ -148,13 +198,16 @@ void PlayState::DestroyAsteroid(int index)
 
 }
 
-void PlayState::SpawnAsteroid(sf::Time deltaTime)
+void PlayState::Spawn(sf::Time deltaTime)
 {
-	SpawnDelay += deltaTime;
-	if (SpawnDelay.asSeconds() > 3)
+	spawnDelay += deltaTime;
+	if (spawnDelay.asSeconds() > 5)
 	{
+		int rand = std::rand() % 2;
+
 		for (ObjectData* objectData : objectList)
-			if (objectData->GetType() == Type::ASTEROID)
+		{
+			if ((objectData->GetType() == Type::ASTEROID) && (rand == 0 || rand == 2))
 				if (objectData->IsRandomlySpawned())
 				{
 					uint16 position = std::rand() % SAFEAREA_W - 15;
@@ -164,10 +217,21 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 						asteroid->load(objectData, sf::Vector2f((float)position, -50));
 						asteroid->SetMovement(0, velocity);
 						asteroids.push_back(asteroid);
-						SpawnDelay = SpawnDelay.Zero;
-						break;
 					}
 				}
+			if ((objectData->GetType() == Type::ENEMY) && (rand == 1 || rand == 2))
+				if (objectData->IsRandomlySpawned())
+				{
+					uint16 position = std::rand() % SAFEAREA_W - 15;
+					if (Enemy* enemy = new Enemy())
+					{
+						enemy->load(objectData, sf::Vector2f((float)position, -10));
+						enemies.push_back(enemy);
+					}
+				}
+			spawnDelay = spawnDelay.Zero;
+		}
+
 	}
 }
 

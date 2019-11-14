@@ -13,6 +13,9 @@ Player::Player()
 	velocity.x = 0.1f;
 	velocity.y = 0.1f;
 	hitPoints = 3;
+
+	missileMovement.x = 0.0f;
+	missileMovement.y = -10.0f;
 }
 void Player::update(sf::Time deltaTime)
 {
@@ -46,36 +49,14 @@ void Player::update(sf::Time deltaTime)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X))
 		{
 			fireDelay += deltaTime;
-			if (fireDelay.asMilliseconds() > 200)
+			if (fireDelay.asMilliseconds() > 100)
 			{
 				FireMissile("missile");
 				fireDelay = fireDelay.Zero;
 			}
 		}
 		sprite.move(movement);
-		if (IsOffBounds())
-		{
-			if (sprite.getPosition().x <= 0)
-			{
-				sprite.setPosition(0, sprite.getPosition().y);
-				movement.x = 0;
-			}
-			if (sprite.getPosition().y <= 0)
-			{
-				sprite.setPosition(sprite.getPosition().x, 0);
-				movement.y = 0;
-			}
-			if (sprite.getPosition().x >= SAFEAREA_W)
-			{
-				sprite.setPosition(SAFEAREA_W, sprite.getPosition().y);
-				movement.x = 0;
-			}
-			if (sprite.getPosition().y >= SAFEAREA_H)
-			{
-				sprite.setPosition(sprite.getPosition().x, SAFEAREA_H);
-				movement.y = 0;
-			}
-		}
+		Object::update(deltaTime);
 		UpdateImmunity(deltaTime, true);
 	}
 	else

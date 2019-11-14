@@ -25,7 +25,7 @@
 			"hitPoints":3,
 			"size":20,
 			"parent":"LargeGreyAsteroid",
-			"RandomSpawn":true,
+			"RandomSpawn":false,
 			"type":"Asteroid",
 			"textureId":"mGreyAsteroid"
 		},
@@ -34,9 +34,18 @@
 			"hitPoints":1,
 			"size":10,
 			"parent":"MediumGreyAsteroid",
-			"RandomSpawn":true,
+			"RandomSpawn":false,
 			"type":"Asteroid",
 			"textureId":"sGreyAsteroid"
+		},
+		
+		{
+			"name":"EnemyBlack",
+			"hitPoints":3,
+			"size":10,
+			"RandomSpawn":true,
+			"type":"Enemy",
+			"textureId":"EnemyBlack1"
 		}
 	]
 }

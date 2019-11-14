@@ -11,17 +11,6 @@
 #include "Collision.h"
 #include <map>
 
-namespace mDir
-{
-	enum Direction
-	{
-		DOWN,
-		UP,
-		LEFT,
-		RIGHT
-	};
-}
-
 enum Type
 {
 	ASTEROID = 0,
@@ -89,9 +78,8 @@ public:
 	//Returns object Sprite
 	sf::Sprite GetSprite();
 
-	virtual void update(){}
 	//This function is for objects that needs to measure time to deal with it's logics
-	virtual void update(sf::Time deltaTime){}
+	virtual void update(sf::Time deltaTime);
 	/*
 	Function for sprite sheet animation
 	deltaTime = time measuring and FPS pattern (Should come all the way from Game base class)
@@ -110,7 +98,7 @@ public:
 	bool WaitAnimation(int waitPoint);
 
 	//Return true if Object is outside window
-	virtual bool IsOffBounds();
+	bool IsOffBounds();
 
 	//Deals damage to the object
 	void DamageObject(int hit = 1);
@@ -131,6 +119,7 @@ public:
 protected:
 	//Sets sprite origin relative to the current sprite
 	void SetCenter();
+
 
 	sf::Sprite sprite;
 	sf::Vector2f velocity; //use velocity for speed increasing

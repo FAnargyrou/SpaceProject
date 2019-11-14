@@ -29,7 +29,7 @@ void Ship::DestroyMissile(int index)
 	missiles.erase(missiles.begin() + index);
 }
 
-void Ship::FireMissile(std::string texture, mDir::Direction dir)
+void Ship::FireMissile(std::string texture)
 {
 	sf::Sprite missile;
 	missile.setTexture((ContentManager::Instance().get(texture)));
@@ -93,7 +93,7 @@ void Ship::UpdateMissiles()
 {
 	for (int i = 0; i < missiles.size(); i++)
 	{
-		missiles[i].move(0, -10.f);
+		missiles[i].move(missileMovement);
 		if (missiles[i].getPosition().x > SAFEAREA_W || missiles[i].getPosition().x < 0 || missiles[i].getPosition().y > SAFEAREA_H || missiles[i].getPosition().y < 0)
 			DestroyMissile(i);
 	}

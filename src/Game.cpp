@@ -36,7 +36,7 @@ void Game::Run()
 	_window.setView(_view);
 
 	ContentLoader contentLoad;
-	ContentManager::Instance().load("explosion", "assets/explosion2.png", true);
+	
 
 
 	while(_window.isOpen())

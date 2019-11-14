@@ -13,4 +13,13 @@ class Enemy : public Ship
 public:
 	Enemy(int healthPoints = 1);
 	void update(sf::Time deltaTime) override;
+private:
+	enum MovePattern
+	{
+		BASIC,
+		CHASE,
+		HORIZONTAL
+	};
+
+	MovePattern pattern;
 };

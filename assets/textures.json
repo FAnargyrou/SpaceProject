@@ -6,6 +6,7 @@
 		{"filePath":"assets/meteorGrey_big4.png", "textureID":"lGreyAsteroid", "isSmooth":true},
 		{"filePath":"assets/meteorGrey_med1.png", "textureID":"mGreyAsteroid", "isSmooth":true},
 		{"filePath":"assets/meteorGrey_small2.png", "textureID":"sGreyAsteroid", "isSmooth":true},
+		{"filePath":"assets/enemies/enemyBlack1.png", "textureID":"EnemyBlack1", "isSmooth":true},
 		
 		{"filePath":"assets/backgrounds/purple.png", "textureID":"PurpleBackground", "isSmooth":true, "isRepeated":true},
 		{"filePath":"assets/backgrounds/darkPurple.png", "textureID":"DarkPurpleBackground", "isSmooth":true, "isRepeated":true},

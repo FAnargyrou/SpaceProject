@@ -156,6 +156,18 @@ sf::Sprite Object::GetSprite()
 	return sprite;
 }
 
+void Object::update(sf::Time deltaTime)
+{
+	if (sprite.getPosition().x < 0 - sprite.getLocalBounds().width)
+		sprite.setPosition(SAFEAREA_W + sprite.getLocalBounds().width / 2, sprite.getPosition().y);
+	if (sprite.getPosition().y < 0 - sprite.getLocalBounds().height)
+		sprite.setPosition(sprite.getPosition().x, SAFEAREA_H + sprite.getLocalBounds().height / 2);
+	if (sprite.getPosition().x > SAFEAREA_W + sprite.getLocalBounds().width)
+		sprite.setPosition(0 - sprite.getLocalBounds().width / 2, sprite.getPosition().y);
+	if (sprite.getPosition().y > SAFEAREA_H + sprite.getLocalBounds().height)
+		sprite.setPosition(sprite.getPosition().x, 0 - sprite.getLocalBounds().height / 2);
+}
+
 void Object::Animate(sf::Time deltaTime, int milliseconds, int width, int height)
 {
 
@@ -208,13 +220,13 @@ void Object::SetCenter()
 
 bool Object::IsOffBounds()
 {
-	if (sprite.getPosition().x < 0)
+	if (sprite.getPosition().x < 0 - sprite.getLocalBounds().width)
 		return true;
-	if (sprite.getPosition().y < 0)
+	if (sprite.getPosition().y < 0 - sprite.getLocalBounds().height)
 		return true;
-	if (sprite.getPosition().x > SAFEAREA_W)
+	if (sprite.getPosition().x > SAFEAREA_W + sprite.getLocalBounds().width)
 		return true;
-	if (sprite.getPosition().y > SAFEAREA_H)
+	if (sprite.getPosition().y > SAFEAREA_H + sprite.getLocalBounds().height)
 		return true;
 	return false;
 }

@@ -27,15 +27,10 @@ void Asteroid::update(sf::Time deltaTime)
 	//TO DO:
 	if (!bIsDead)
 	{
+		Object::update(deltaTime);
 		sprite.rotate(0.5f);
 		sprite.move(movement);
-		if (IsOffBounds())
-		{
-			if (sprite.getPosition().x > 400)
-				SetDirection<mDir::Direction>(mDir::LEFT);
-			else
-				SetDirection<mDir::Direction>(mDir::RIGHT);
-		}
+
 		if (bIsHit)
 		{
 			lastFrame += deltaTime;
@@ -61,11 +56,7 @@ void Asteroid::update(sf::Time deltaTime)
 	}
 }
 
-bool Asteroid::IsOffBounds()
+void Asteroid::SetDirection(float i)
 {
-	if (sprite.getPosition().x < 0)
-		return true;
-	if (sprite.getPosition().x > SAFEAREA_W)
-		return true;
-	return false;
+	movement.x = i;
 }

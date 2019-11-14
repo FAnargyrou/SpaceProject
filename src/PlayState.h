@@ -25,13 +25,13 @@ public:
 	void render() override;
 private:
 	void DestroyAsteroid(int index);
-	void SpawnAsteroid(sf::Time deltaTime);
+	void Spawn(sf::Time deltaTime);
 
 	void CollideObjects(Object* Object1, Object* Object2);
-	sf::Time SpawnDelay;
+	sf::Time spawnDelay;
 
 	Player player;
-	Enemy enemy;
+	std::vector<Enemy*> enemies;
 	std::vector<Asteroid*> asteroids;
 
 	sf::Sprite background;

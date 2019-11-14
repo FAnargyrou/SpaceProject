@@ -21,7 +21,7 @@ public:
 	void DestroyMissile(int index);
 	void SetMaxSpeed(float speed);
 protected:
-	void FireMissile(std::string texture, mDir::Direction dir = mDir::Direction::UP);
+	void FireMissile(std::string texture);
 	void MoveUp();
 	void MoveDown();
 	void MoveLeft();
@@ -30,6 +30,7 @@ protected:
 
 	sf::Time fireDelay;
 
+	sf::Vector2f missileMovement;
 	std::vector<sf::Sprite> missiles;
 
 	float maxSpeed;
