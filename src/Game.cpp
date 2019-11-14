@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "PlayState.h"
 #include "PauseState.h"
+#include "MainMenuState.h"
 
 
 
@@ -21,7 +22,7 @@ Game::Game() :
 
 	RegisterStates();
 
-	stateFactory.PushState(States::PLAY_STATE);
+	stateFactory.PushState(States::MENU_STATE);
 }
 
 void Game::Run()
@@ -96,6 +97,7 @@ void Game::RegisterStates()
 {
 	stateFactory.RegisterId<PlayState>(States::PLAY_STATE);
 	stateFactory.RegisterId<PauseState>(States::PAUSE_STATE);
+	stateFactory.RegisterId<MainMenuState>(States::MENU_STATE);
 }
 
 sf::View Game::GetLetterBoxView(sf::View view, int windowWidth, int windowHeight)

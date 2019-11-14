@@ -27,9 +27,17 @@ namespace Menu
 				setColor(sf::Color::White);
 				setCharacterSize(getCharacterSize() - 5);
 			}
+
+			setOrigin(getLocalBounds().width / 2, getLocalBounds().height / 2);
+
 			_isSelected = isSelected;
 		}
 
+	}
+
+	bool Button::IsSelected()
+	{
+		return _isSelected;
 	}
 
 	void Button::GetBtnFunction()

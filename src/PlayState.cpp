@@ -17,12 +17,12 @@ void PlayState::load()
 	loader.LoadTextures("assets/textures.json");
 	loader.LoadObjectData("assets/ObjectData.json", objectList);
 
-	for(ObjectData* data : objectList)
-		if(data->GetType() == Type::PLAYER)
+	for (ObjectData* data : objectList)
+		if (data->GetType() == Type::PLAYER)
 			player.load(data, sf::Vector2f(SAFEAREA_W / 2, SAFEAREA_H));
 
-	ContentManager::Instance().load("background", "assets/purple.png", false, true);
-	background.setTexture(ContentManager::Instance().get("background"));
+	//TO DO: Remove hardcode for Background's texture; ID is currently defined in Textures.json but we have to manually match it here.
+	background.setTexture(ContentManager::Instance().get("PurpleBackground"));
 	background.setTextureRect(sf::IntRect(0, 0, SAFEAREA_W, SAFEAREA_H));
 
 	std::srand((uint16)std::time(NULL));
@@ -33,6 +33,7 @@ void PlayState::clear()
 	for (Asteroid* asteroid : asteroids)
 		delete asteroid;
 	asteroids.clear();
+	ContentManager::Instance().ClearTextureMap();
 }
 
 bool PlayState::update(sf::Time deltaTime)

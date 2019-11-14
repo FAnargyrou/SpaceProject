@@ -37,7 +37,8 @@ void ContentLoader::LoadTextures(std::string filePath)
 				throw std::runtime_error("Object name cannot be NULL");
 			}
 			bool isSmooth = content[array].get("isSmooth", false).asBool();
-			ContentManager::Instance().load(id, filePath, isSmooth);
+			bool isRepeated = content[array].get("isRepeated", false).asBool();
+			ContentManager::Instance().load(id, filePath, isSmooth, isRepeated);
 		}
 		else
 			throw std::runtime_error("File Path from texture is NULL");

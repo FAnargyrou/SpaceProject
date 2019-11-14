@@ -18,13 +18,12 @@ public:
 	bool HandleEvent(const sf::Event& event) override;
 
 	void ResumeGame();
+	void ReturnToMenu();
 
 private:
 
 	sf::RectangleShape background;
 	sf::Text pauseText;
-
-	int selectedOption;
 
 	std::unique_ptr<Menu::MenuList> menuList;
 };

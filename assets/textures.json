@@ -1,10 +1,15 @@
 {
 	"textures":
 	[
-		{"filePath":"assets/ship.png", "textureID":"player", "isSmooth":false},
+		{"filePath":"assets/newship_bw.png", "textureID":"player", "isSmooth":true},
 		{"filePath":"assets/laserBlue07.png", "textureID":"missile", "isSmooth":false},
 		{"filePath":"assets/meteorGrey_big4.png", "textureID":"lGreyAsteroid", "isSmooth":true},
 		{"filePath":"assets/meteorGrey_med1.png", "textureID":"mGreyAsteroid", "isSmooth":true},
-		{"filePath":"assets/meteorGrey_small2.png", "textureID":"sGreyAsteroid", "isSmooth":true}
+		{"filePath":"assets/meteorGrey_small2.png", "textureID":"sGreyAsteroid", "isSmooth":true},
+		
+		{"filePath":"assets/backgrounds/purple.png", "textureID":"PurpleBackground", "isSmooth":true, "isRepeated":true},
+		{"filePath":"assets/backgrounds/darkPurple.png", "textureID":"DarkPurpleBackground", "isSmooth":true, "isRepeated":true},
+		{"filePath":"assets/backgrounds/blue.png", "textureID":"BlueBackground", "isSmooth":true, "isRepeated":true},
+		{"filePath":"assets/backgrounds/black.png", "textureID":"BlackBackground", "isSmooth":true, "isRepeated":true}
 	]
 }

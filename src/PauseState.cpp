@@ -21,7 +21,7 @@ void PauseState::load()
 
 	std::function<void()> exitFunction = [this]()
 	{
-		this->clear();
+		this->ReturnToMenu();
 	};
 
 	std::function<void()> resumeFunction = [this]()
@@ -29,16 +29,16 @@ void PauseState::load()
 		this->ResumeGame();
 	};
 
-	menuList.reset(new Menu::MenuList(pauseText.getPosition().x - 60, size.y / 2));
+	menuList.reset(new Menu::MenuList(size.x / 2, size.y / 2));
 
 	menuList->AddNewOption("Resume", GetSettings().GetFont(), resumeFunction);
-	menuList->AddNewOption("Exit", GetSettings().GetFont(), exitFunction);
+	menuList->AddNewOption("Return to main menu", GetSettings().GetFont(), exitFunction);
 
 }
 
 void PauseState::clear()
 {
-	RequestClear();
+	
 }
 
 bool PauseState::update(sf::Time deltaTime)
@@ -78,4 +78,10 @@ bool PauseState::HandleEvent(const sf::Event& event)
 void PauseState::ResumeGame()
 {
 	RequestPop();
+}
+
+void PauseState::ReturnToMenu()
+{
+	RequestClear();
+	RequestPush(States::MENU_STATE);
 }

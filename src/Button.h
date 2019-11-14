@@ -12,9 +12,8 @@ namespace Menu
 	public:
 		Button(sf::Font& font, std::string text, std::function<void()> btnFunction, int fontSize = 20);
 
-		
-
 		void SetSelected(bool isSelected);
+		bool IsSelected();
 
 		void GetBtnFunction();
 

@@ -30,6 +30,14 @@ void ContentManager::load(std::string id, std::string fileName, bool bIsSmooth, 
 	textureMap.insert(std::make_pair(id, std::move(texture)));
 }
 
+void ContentManager::ClearTextureMap()
+{
+	std::map<std::string, std::unique_ptr<sf::Texture>>::iterator itr;
+
+	for (itr = textureMap.begin(); itr != textureMap.end(); itr++)
+		itr->second.reset();
+	textureMap.clear();
+}
 
 sf::Texture& ContentManager::get(std::string id)
 {

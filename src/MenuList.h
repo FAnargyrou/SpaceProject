@@ -23,9 +23,14 @@ namespace Menu
 
 		std::vector<Button> GetButtons();
 	private:
+		// Sets position for all current buttons. _position being the centre.
+		void SetArea();
+
 		float _spacing;
 		std::vector<Button> _buttons;
 		sf::Vector2f _nextPos;
+		sf::Vector2f _position;
+		sf::IntRect _area;
 		int _curSelection;
 		int _fontSize;
 	};

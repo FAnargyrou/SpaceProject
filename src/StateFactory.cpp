@@ -70,9 +70,12 @@ void StateFactory::ApplyPendingChanges()
 			}
 			break;
 		case Action::Pop:
+			_states.back()->clear();
 			_states.pop_back();
 			break;
 		case Action::Clear:
+			for (int i = 0; i < _states.size(); i++)
+				_states[i]->clear();
 			_states.clear();
 			break;
 		}
