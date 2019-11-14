@@ -65,7 +65,7 @@ bool Asteroid::IsOffBounds()
 {
 	if (sprite.getPosition().x < 0)
 		return true;
-	if (sprite.getPosition().x > 800)
+	if (sprite.getPosition().x > SAFEAREA_W)
 		return true;
 	return false;
 }

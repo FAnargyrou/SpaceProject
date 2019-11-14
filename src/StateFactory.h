@@ -6,17 +6,12 @@
 
 #include "State.h"
 
-enum States
-{
-	PLAY_STATE,
-	PAUSE_STATE,
-	MENU_STATE,
-	BLANK_STATE
-};
-
 class StateFactory : sf::NonCopyable
 {
 public:
+
+	StateFactory(State::Settings settings);
+
 	enum Action
 	{
 		Push,
@@ -28,7 +23,8 @@ public:
 	void RegisterId(States stateId);
 
 	void update(sf::Time deltaTime);
-	void render(sf::RenderWindow* window);
+	void render();
+	void HandleEvent(const sf::Event& event);
 
 	void PushState(States stateId);
 	void PopState();
@@ -53,6 +49,8 @@ private:
 	std::vector<PendingChange> _pendingChanges;
 
 	std::map<States, std::function<State::StatePtr()>> _functions;
+
+	State::Settings _settings;
 };
 
 template <class T>
@@ -60,7 +58,7 @@ void StateFactory::RegisterId(States stateId)
 {
 	_functions[stateId] = [this]()
 	{
-		return State::StatePtr(new T());
+		return State::StatePtr(new T(*this, _settings));
 	};
 }
 

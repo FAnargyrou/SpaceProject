@@ -65,14 +65,14 @@ void Player::update(sf::Time deltaTime)
 				sprite.setPosition(sprite.getPosition().x, 0);
 				movement.y = 0;
 			}
-			if (sprite.getPosition().x >= 800)
+			if (sprite.getPosition().x >= SAFEAREA_W)
 			{
-				sprite.setPosition(800, sprite.getPosition().y);
+				sprite.setPosition(SAFEAREA_W, sprite.getPosition().y);
 				movement.x = 0;
 			}
-			if (sprite.getPosition().y >= 600)
+			if (sprite.getPosition().y >= SAFEAREA_H)
 			{
-				sprite.setPosition(sprite.getPosition().x, 600);
+				sprite.setPosition(sprite.getPosition().x, SAFEAREA_H);
 				movement.y = 0;
 			}
 		}
@@ -83,11 +83,4 @@ void Player::update(sf::Time deltaTime)
 		ExplodeObject(deltaTime);
 	}
 	UpdateMissiles();
-}
-
-bool Player::isMoving()
-{
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-		return false;
-	return true;
 }

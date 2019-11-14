@@ -7,25 +7,33 @@
 
 #include "PlayState.h"
 
+PlayState::PlayState(StateFactory& stateFactory, Settings settings) : State(stateFactory, settings)
+{
+
+}
+
 void PlayState::load()
 {
 	loader.LoadTextures("assets/textures.json");
 	loader.LoadObjectData("assets/ObjectData.json", objectList);
 
-	for(ObjectData* data : objectList)
-		if(data->GetType() == Type::PLAYER)
-			player.load(data, sf::Vector2f(400, 600));
+	for (ObjectData* data : objectList)
+		if (data->GetType() == Type::PLAYER)
+			player.load(data, sf::Vector2f(SAFEAREA_W / 2, SAFEAREA_H));
 
-	Content::Instance().load("background", "assets/purple.png", false, true);
-	background.setTexture(Content::Instance().get("background"));
-	background.setTextureRect(sf::IntRect(0, 0, 800, 600));
+	//TO DO: Remove hardcode for Background's texture; ID is currently defined in Textures.json but we have to manually match it here.
+	background.setTexture(ContentManager::Instance().get("PurpleBackground"));
+	background.setTextureRect(sf::IntRect(0, 0, SAFEAREA_W, SAFEAREA_H));
 
 	std::srand((uint16)std::time(NULL));
 }
 
-void PlayState::clean()
+void PlayState::clear()
 {
+	for (Asteroid* asteroid : asteroids)
+		delete asteroid;
 	asteroids.clear();
+	ContentManager::Instance().ClearTextureMap();
 }
 
 bool PlayState::update(sf::Time deltaTime)
@@ -34,7 +42,8 @@ bool PlayState::update(sf::Time deltaTime)
 		bgY--;
 	else
 		bgY = 0;
-	background.setTextureRect(sf::IntRect(0, bgY, 800, 600));
+	background.setTextureRect(sf::IntRect(0, bgY, SAFEAREA_W, SAFEAREA_H));
+	
 	SpawnAsteroid(deltaTime);
 	for (int astArray = 0; astArray < asteroids.size(); astArray++)
 	{
@@ -84,16 +93,28 @@ bool PlayState::update(sf::Time deltaTime)
 	return true;
 }
 
-void PlayState::render(sf::RenderWindow* window)
+void PlayState::render()
 {
-	window->draw(background);
+	sf::RenderWindow& window = GetSettings().GetWindow();
+
+	window.draw(background);
 	for (uint8 i = 0; i < player.GetMissiles().size(); i++)
-		window->draw(player.getMissileSprite(i));
+		window.draw(player.getMissileSprite(i));
 	for (uint8 astArray = 0; astArray < asteroids.size(); astArray++)
-		window->draw(asteroids[astArray]->GetSprite());
-	window->draw(player.GetSprite());
-	window->draw(enemy.GetSprite());
+		window.draw(asteroids[astArray]->GetSprite());
+	window.draw(player.GetSprite());
+	window.draw(enemy.GetSprite());
 	
+}
+
+bool PlayState::HandleEvent(const sf::Event& event)
+{
+	if (event.type == sf::Event::KeyPressed)
+		if (event.key.code == sf::Keyboard::Escape)
+			RequestPush(States::PAUSE_STATE);
+	if (event.type == sf::Event::LostFocus)
+		RequestPush(States::PAUSE_STATE);
+	return true;
 }
 
 void PlayState::DestroyAsteroid(int index)
@@ -136,7 +157,7 @@ void PlayState::SpawnAsteroid(sf::Time deltaTime)
 			if (objectData->GetType() == Type::ASTEROID)
 				if (objectData->IsRandomlySpawned())
 				{
-					uint16 position = std::rand() % 785;
+					uint16 position = std::rand() % SAFEAREA_W - 15;
 					float velocity = ((float)std::rand() / (float)RAND_MAX * 1) + 1;
 					if (Asteroid* asteroid = new Asteroid())
 					{

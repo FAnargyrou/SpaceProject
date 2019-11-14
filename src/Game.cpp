@@ -8,26 +8,38 @@
 
 #include "Game.h"
 #include "PlayState.h"
+#include "PauseState.h"
+#include "MainMenuState.h"
 
-Game::Game() : window(sf::VideoMode(800, 600), "SFML"), timePerFrame(sf::seconds(1.f / 60.f))
+
+
+Game::Game() : 
+	_window(sf::VideoMode(1280, 720), "SFML" ), 
+	timePerFrame(sf::seconds(1.f / 60.f)),
+	stateFactory(State::Settings(_window, font))
 {
+	font.loadFromFile("assets/kenvector_future.ttf");
+
 	RegisterStates();
 
-	stateFactory.PushState(States::PLAY_STATE);
+	stateFactory.PushState(States::MENU_STATE);
 }
 
 void Game::Run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	view.setSize(800, 600);
-	view.setCenter(400, 300);
+	_view.setSize(SAFEAREA_W, SAFEAREA_H);
+	_view.setCenter(SAFEAREA_W/2, SAFEAREA_H/2);
+	_view = GetLetterBoxView(_view, _window.getSize().x, _window.getSize().y);
+	
+	_window.setView(_view);
 
 	ContentLoader contentLoad;
-	Content::Instance().load("explosion", "assets/explosion2.png", true);
+	ContentManager::Instance().load("explosion", "assets/explosion2.png", true);
 
 
-	while(window.isOpen())
+	while(_window.isOpen())
 	{
 		sf::Time dt = clock.restart();
 		timeSinceLastUpdate += dt;
@@ -39,7 +51,7 @@ void Game::Run()
 			update(timePerFrame);
 			
 			if (stateFactory.IsEmpty())
-				window.close();
+				_window.close();
 		}
 		render();
 	}
@@ -48,12 +60,19 @@ void Game::Run()
 void Game::processEvents()
 {
 	sf::Event event;
-	while(window.pollEvent(event))
+	while(_window.pollEvent(event))
 	{
 		switch(event.type)
 		{
 		case sf::Event::Closed:
-			window.close();
+			_window.close();
+			break;
+		case sf::Event::KeyPressed:
+		case sf::Event::LostFocus:
+			stateFactory.HandleEvent(event);
+			break;
+		case sf::Event::Resized:
+			_view = GetLetterBoxView(_view, event.size.width, event.size.height);
 			break;
 		default:
 			break;
@@ -68,13 +87,44 @@ void Game::update(sf::Time deltaTime)
 
 void Game::render()
 {
-	window.setView(view);
-	window.clear();
-	stateFactory.render(&window);
-	window.display();
+	_window.setView(_view);
+	_window.clear();
+	stateFactory.render();
+	_window.display();
 }
 
 void Game::RegisterStates()
 {
 	stateFactory.RegisterId<PlayState>(States::PLAY_STATE);
+	stateFactory.RegisterId<PauseState>(States::PAUSE_STATE);
+	stateFactory.RegisterId<MainMenuState>(States::MENU_STATE);
+}
+
+sf::View Game::GetLetterBoxView(sf::View view, int windowWidth, int windowHeight)
+{
+	float windowRatio = windowWidth / (float) windowHeight;
+	float viewRatio = view.getSize().x / view.getSize().y;
+	float sizeX = 1;
+	float sizeY = 1;
+	float posX = 0;
+	float posY = 0;
+
+	bool horizontalSpacing = true;
+	if (windowRatio < viewRatio)
+		horizontalSpacing = false;
+
+	if (horizontalSpacing)
+	{
+		sizeX = viewRatio / windowRatio;
+		posX = (1 - sizeX) / 2.0f;
+	}
+	else
+	{
+		sizeY = windowRatio / viewRatio;
+		posY = (1 - sizeY) / 2.0f;
+	}
+
+	view.setViewport(sf::FloatRect(posX, posY, sizeX, sizeY));
+
+	return view;
 }
