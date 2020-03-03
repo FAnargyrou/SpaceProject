@@ -28,6 +28,9 @@ private:
 	void Spawn(sf::Time deltaTime);
 
 	void CollideObjects(Object* Object1, Object* Object2);
+
+	void UpdateScore(uint8 points);
+
 	sf::Time spawnDelay;
 
 	Player player;
@@ -35,6 +38,7 @@ private:
 	std::vector<Asteroid*> asteroids;
 
 	sf::Sprite background;
+	sf::Text scoreText;
 	uint8 bgY;
 
 	ObjectTexture asteroidTextures;
@@ -44,5 +48,7 @@ private:
 	std::vector<ObjectData*> objectList;
 
 	ContentLoader loader;
+
+	uint32 score;
 };
 #endif

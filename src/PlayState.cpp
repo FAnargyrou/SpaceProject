@@ -27,6 +27,17 @@ void PlayState::load()
 	background.setTextureRect(sf::IntRect(0, 0, SAFEAREA_W, SAFEAREA_H));
 
 	std::srand((uint16)std::time(NULL));
+
+	// Scoreboard system; For now hardcoded into a SF::Text format
+
+	score = 0;
+	scoreText.setFont(GetSettings().GetFont());
+	scoreText.setString(std::to_string(score));
+	scoreText.setColor(sf::Color::Cyan);
+	scoreText.setOutlineThickness(1);
+	scoreText.setOutlineColor(sf::Color::Black);
+
+	scoreText.setPosition(50.f, 50.f);
 }
 
 void PlayState::clear()
@@ -79,6 +90,7 @@ bool PlayState::update(sf::Time deltaTime)
 				{
 					asteroids[astArray]->DamageObject();
 					player.DestroyMissile(misArray);
+					UpdateScore(50);
 				}
 
 			}
@@ -119,6 +131,7 @@ bool PlayState::update(sf::Time deltaTime)
 			{
 				enemies[i]->DamageObject();
 				player.DestroyMissile(m);
+				UpdateScore(50);
 			}
 
 		}
@@ -154,7 +167,7 @@ void PlayState::render()
 			window.draw(enemies[i]->getMissileSprite(m));
 	}
 	window.draw(player.GetSprite());
-	
+	window.draw(scoreText);
 }
 
 bool PlayState::HandleEvent(const sf::Event& event)
@@ -253,4 +266,10 @@ void PlayState::CollideObjects(Object* Object1, Object* Object2)
 
 	Object1->SetMovement(result1);
 	Object2->SetMovement(result2);
+}
+
+void PlayState::UpdateScore(uint8 points)
+{
+	score += points;
+	scoreText.setString(std::to_string(score));
 }
