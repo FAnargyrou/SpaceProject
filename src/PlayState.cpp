@@ -14,6 +14,8 @@ PlayState::PlayState(StateFactory& stateFactory, Settings settings) : State(stat
 
 void PlayState::load()
 {
+	isOver = false;
+
 	loader.LoadTextures("assets/textures.json");
 	loader.LoadObjectData("assets/ObjectData.json", objectList);
 	ContentManager::Instance().load("explosion", "assets/explosion2.png", true);
@@ -74,14 +76,10 @@ bool PlayState::update(sf::Time deltaTime)
 			{
 				if (!player.IsImmune())
 				{
-					//player.damageObject();
+					player.DamageObject(1, true);
 					asteroids[astArray]->DamageObject();
 					CollideObjects(&player, asteroids[astArray]);
 				}
-				if (player.GetHitPoints() == 0)
-					player.SetDeadStatus(true);
-				else
-					player.SetImmunity(2);
 				
 			}
 			for (int misArray = 0; misArray < player.GetMissiles().size(); misArray++)
@@ -111,8 +109,7 @@ bool PlayState::update(sf::Time deltaTime)
 			if (!player.IsImmune())
 			{
 				enemies[i]->DamageObject();
-				player.SetImmunity(2);
-				//player.DamageObject();
+				player.DamageObject(1, true);
 			}
 		}
 		for (int m = 0; m < enemies[i]->GetMissiles().size(); m++)
@@ -122,6 +119,7 @@ bool PlayState::update(sf::Time deltaTime)
 				if (!player.IsImmune())
 				{
 					enemies[i]->DestroyMissile(m);
+					player.DamageObject(1, true);
 				}
 			}
 		}
@@ -147,6 +145,12 @@ bool PlayState::update(sf::Time deltaTime)
 	}
 
 	player.update(deltaTime);
+
+	if (player.GetDeadStatus() && !isOver)
+	{
+		RequestPush(States::GAMEOVER_STATE);
+		isOver = true;
+	}
 
 	return true;
 }

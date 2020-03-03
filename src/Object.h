@@ -101,7 +101,7 @@ public:
 	bool IsOffBounds();
 
 	//Deals damage to the object
-	void DamageObject(int hit = 1);
+	void DamageObject(int hit = 1, bool setImmunity = false);
 	//Gets object's current HP
 	int GetHitPoints();
 

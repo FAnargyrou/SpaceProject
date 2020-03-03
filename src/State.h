@@ -10,11 +10,14 @@
 #define STATE_H
 #include "ContentLoader.h"
 
+// New states have to be registered in Game.cpp
+
 enum States
 {
 	PLAY_STATE,
 	PAUSE_STATE,
 	MENU_STATE,
+	GAMEOVER_STATE,
 	BLANK_STATE
 };
 

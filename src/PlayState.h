@@ -50,5 +50,7 @@ private:
 	ContentLoader loader;
 
 	uint32 score;
+
+	bool isOver;
 };
 #endif

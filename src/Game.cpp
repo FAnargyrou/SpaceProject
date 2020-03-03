@@ -10,6 +10,7 @@
 #include "PlayState.h"
 #include "PauseState.h"
 #include "MainMenuState.h"
+#include "GameOverState.h"
 
 
 
@@ -96,6 +97,7 @@ void Game::render()
 void Game::RegisterStates()
 {
 	stateFactory.RegisterId<PlayState>(States::PLAY_STATE);
+	stateFactory.RegisterId<GameOverState>(States::GAMEOVER_STATE);
 	stateFactory.RegisterId<PauseState>(States::PAUSE_STATE);
 	stateFactory.RegisterId<MainMenuState>(States::MENU_STATE);
 }

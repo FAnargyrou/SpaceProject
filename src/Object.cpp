@@ -231,8 +231,10 @@ bool Object::IsOffBounds()
 	return false;
 }
 
-void Object::DamageObject(int hit)
+void Object::DamageObject(int hit, bool setImmunity)
 {
+	if (setImmunity)
+		SetImmunity(2.0f);
 	if (hit < 1)
 		hit = 1;
 	hitPoints -= hit;

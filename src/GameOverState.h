@@ -1,14 +1,13 @@
-#ifndef PAUSESTATE_H
-#define PAUSESTATE_H
+#ifndef GAMEOVERSTATE_H
+#define GAMEOVERSTATE_H
 
-#include <list>
 #include "State.h"
 #include "MenuList.h"
 
-class PauseState : public State
+class GameOverState : public State
 {
 public:
-	PauseState(StateFactory& stateFactory, Settings settings);
+	GameOverState(StateFactory& stateFactory, Settings settings);
 
 	void load() override;
 	void clear() override;
@@ -17,16 +16,16 @@ public:
 	void render() override;
 	bool HandleEvent(const sf::Event& event) override;
 
-
 	// Button functions
-	void ResumeGame();
-	void ReturnToMenu();
-private:
+	void RestartGame();
+	void ExitToMenu();
 
+private:
+	
+	sf::Text gameOverText;
 	sf::RectangleShape background;
-	sf::Text pauseText;
 
 	std::unique_ptr<Menu::MenuList> menuList;
 };
 
-#endif
+#endif GAMEOVERSTATE_H

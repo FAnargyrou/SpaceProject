@@ -19,6 +19,8 @@ Player::Player()
 }
 void Player::update(sf::Time deltaTime)
 {
+	if (hitPoints <= 0)
+		bIsDead = true;
 	if (!bIsDead)
 	{
 
