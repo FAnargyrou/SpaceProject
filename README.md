@@ -2,7 +2,7 @@
 
 I started writing this game for fun when I was back in school in 2015. I have recently found the source files lost somewhere in an old HDD.
 
-The objective is to finish this game for practicing/academic purposes. I will be adding instructions on how to debug this code once I have reviewed it properly.
+The objective is to finish this game for practicing/academic purposes. A demo of the game can be downloaded from https://github.com/GhostFinn/SpaceProject/releases
 
 
 ## Built With
