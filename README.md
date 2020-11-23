@@ -18,5 +18,5 @@ The objective is to finish this game for practicing/academic purposes. A demo of
 
 ## Acknowledgments
 
-* Massive shout out to my Physics teacher Paulo, I have lost contact with him when I left school but he was and still is a great inspiration to me. He helped me figure out some of the mechanics for the game all those years ago.
+* Big thanks to my Physics teacher Paulo, I have lost contact with him when I left school but he was and still is a great inspiration to me. He helped me figure out some of the mechanics for the game all those years ago.
 
