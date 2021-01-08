@@ -13,7 +13,7 @@ The objective is to finish this game for practicing/academic purposes. A demo of
 
 ## Author
 
-* **Felipe Anargyrou** - [GhostFinn](https://github.com/GhostFinn)
+* **Felipe Anargyrou** - [FAnargyrou](https://github.com/FAnargyrou)
 
 
 ## Acknowledgments
